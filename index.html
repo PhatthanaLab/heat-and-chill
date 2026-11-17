@@ -267,27 +267,83 @@
             transition: all 0.45s ease;
         }
 
+        /* ================= EMOJI & PERFECTLY CENTERED RIPPLE RING ================= */
+        /* กล่องอิโมจิและวงคลื่นใช้จุดศูนย์กลางเดียวกัน 100% */
         .kawaii-face {
             position: absolute;
-            top: 14px;
+            top: 28px;
             left: 52%;
-            transform: translateX(-50%);
-            font-size: 15px;
-            z-index: 14;
+            transform: translate(-50%, -50%) scale(1);
+            transform-origin: center center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            line-height: 1;
+            z-index: 35;
             pointer-events: none;
-            filter: drop-shadow(0 2px 0 rgba(255,255,255,0.8));
-            transition: transform 0.3s ease;
+            white-space: nowrap;
+        }
+        .kawaii-emoji-text {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 2px 0 rgba(255,255,255,0.9));
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         @keyframes bounceCute {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.18); }
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.16); }
         }
         .kawaii-active {
-            animation: bounceCute 1s infinite ease-in-out;
+            animation: bounceCute 1.1s infinite ease-in-out;
         }
 
-        /* ================= TOUCH HAND & NON-OVERLAPPING SENSORY BANNER ================= */
-        /* ปรับ top: -92px เพื่อให้ป้ายลอยอยู่เหนือป้าย 21.5 °C และป้าย ดูดร้อน/คายร้อน ไม่ซ้อนทับกัน */
+        /* แอนิเมชันขยายตัวอิโมจิจากจุดกึ่งกลางเป๊ะ ไม่เลื่อนแกนหนีวงคลื่น */
+        @keyframes emojiZoomPulse {
+            0% { transform: scale(1); }
+            18% { transform: scale(1.95); }
+            38% { transform: scale(1.75); }
+            58% { transform: scale(1.95); }
+            82% { transform: scale(1.8); }
+            100% { transform: scale(1); }
+        }
+        .kawaii-touch-zoom .kawaii-emoji-text {
+            animation: emojiZoomPulse 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+        }
+
+        /* วงคลื่นรัศมี (Ripple Ring) ผูกติดกับศูนย์กลางของ .kawaii-face โดยตรง */
+        .kawaii-ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            width: 54px;
+            height: 54px;
+            border-radius: 999px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+        }
+        /* ปรับความกว้างวงคลื่นให้รับกับอิโมจิคู่เมื่อผสมสารแล้ว */
+        .kawaii-ripple.wide-emoji {
+            width: 68px;
+            height: 54px;
+        }
+        @keyframes centeredRippleExpand {
+            0% { transform: translate(-50%, -50%) scale(0.65); opacity: 0.95; }
+            100% { transform: translate(-50%, -50%) scale(1.65); opacity: 0; }
+        }
+        .kawaii-ripple.active-ripple {
+            animation: centeredRippleExpand 0.9s ease-out infinite;
+        }
+        .kawaii-ripple.active-ripple-delayed {
+            animation: centeredRippleExpand 0.9s ease-out 0.45s infinite;
+        }
+
+        /* ================= TOUCH CALLOUT BANNER ABOVE BEAKER 3 ================= */
         .touch-fx-overlay {
             position: absolute;
             inset: 0;
@@ -315,31 +371,12 @@
             border-style: solid;
             border-color: #0f172a transparent transparent;
         }
-        .touch-center-hand {
-            position: absolute;
-            top: 12px;
-            left: 0;
-            right: 0;
-            height: 62px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-            pointer-events: none;
-        }
         @keyframes popTopCallout {
             0% { transform: translateX(-50%) scale(0.5) translateY(14px); opacity: 0; }
             18% { transform: translateX(-50%) scale(1.06) translateY(-2px); opacity: 1; }
             30% { transform: translateX(-50%) scale(1) translateY(0px); opacity: 1; }
             85% { transform: translateX(-50%) scale(1) translateY(0px); opacity: 1; }
             100% { transform: translateX(-50%) scale(0.85) translateY(-8px); opacity: 0; }
-        }
-        @keyframes handSlideTap {
-            0% { transform: translateX(32px) rotate(18deg) scale(0.7); opacity: 0; }
-            18% { transform: translateX(0px) rotate(-6deg) scale(1.12); opacity: 1; }
-            32% { transform: translateX(2px) rotate(0deg) scale(1); opacity: 1; }
-            85% { transform: translateX(0px) rotate(0deg) scale(1); opacity: 1; }
-            100% { transform: translateX(18px) scale(0.8); opacity: 0; }
         }
         @keyframes beakerShiverCold {
             0%, 100% { transform: translateX(0); }
@@ -350,29 +387,14 @@
             0%, 100% { transform: scale(1); }
             30%, 70% { transform: scale(1.04); }
         }
-        @keyframes ringRipple {
-            0% { transform: scale(0.55); opacity: 0.95; }
-            100% { transform: scale(1.45); opacity: 0; }
-        }
         .anim-top-callout {
             animation: popTopCallout 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-        .anim-hand-tap {
-            animation: handSlideTap 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
         .beaker-shiver-cold {
             animation: beakerShiverCold 0.45s ease-in-out 3;
         }
         .beaker-pulse-hot {
             animation: beakerPulseHot 0.55s ease-in-out 2;
-        }
-        .touch-ripple-ring {
-            position: absolute;
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            animation: ringRipple 0.95s ease-out infinite;
-            pointer-events: none;
         }
 
         .grad-marks {
@@ -751,7 +773,7 @@
                     </div>
                 </div>
 
-                <!-- THREE BEAKERS STAGE (เพิ่มพื้นที่ด้านบนเพื่อรองรับป้าย เย็นจัด/ร้อนจี๋ ที่ลอยเหนือตัวแจ้งอุณหภูมิ) -->
+                <!-- THREE BEAKERS STAGE -->
                 <div class="flex items-end justify-around w-full px-0.5 pb-0.5 mt-14 pt-6 overflow-visible relative z-20">
 
                     <!-- BEAKER 1 -->
@@ -851,7 +873,7 @@
                         </div>
                     </div>
 
-                    <!-- BEAKER 3 (REACTION SYSTEM + NON-OVERLAPPING TOUCH EFFECT) -->
+                    <!-- BEAKER 3 (REACTION SYSTEM + PERFECTLY CENTERED RIPPLE ON EMOJI) -->
                     <div class="beaker-container" id="beaker-col-3">
                         <div class="h-8 flex items-center justify-center gap-1 mb-1 w-full pl-3">
                             <button id="slot-btn-3" onclick="moveThermometer(3)" class="cartoon-btn bg-sky-100 hover:bg-sky-200 border-dashed text-sky-950 px-2 py-0.5 text-[10px] single-line -ml-3">
@@ -874,12 +896,18 @@
                                 <div id="bulb-3" class="thermo-bulb"></div>
                             </div>
 
-                            <!-- เอฟเฟกต์สัมผัส: หน้าต่างลอยเหนือตัวแจ้งอุณหภูมิและตัวดูด/คายความร้อน ไม่ซ้อนทับกัน -->
+                            <!-- ป้ายแจ้งสถานะลอยด้านบนสุดเหนือป้ายอุณหภูมิ -->
                             <div id="touch-effect-3" class="touch-fx-overlay hidden"></div>
 
                             <div class="beaker-lip"></div>
                             <div id="glass-3" class="beaker-glass">
-                                <div id="kawaii-face-3" class="kawaii-face">😊</div>
+                                <!-- อิโมจิและวงคลื่นรัศมีอยู่ร่วมจุดศูนย์กลางเดียวกัน 100% -->
+                                <div id="kawaii-face-3" class="kawaii-face">
+                                    <div id="kawaii-ripple-1" class="kawaii-ripple"></div>
+                                    <div id="kawaii-ripple-2" class="kawaii-ripple"></div>
+                                    <span id="kawaii-emoji-span" class="kawaii-emoji-text">😊</span>
+                                </div>
+
                                 <div class="grad-marks">
                                     <div class="grad-line">30</div>
                                     <div class="grad-line">20</div>
@@ -1514,6 +1542,13 @@
             resetExperiment();
         }
 
+        function clearTouchRipples() {
+            const r1 = document.getElementById('kawaii-ripple-1');
+            const r2 = document.getElementById('kawaii-ripple-2');
+            if (r1) r1.className = 'kawaii-ripple';
+            if (r2) r2.className = 'kawaii-ripple';
+        }
+
         function resetExperiment() {
             if (graphTimer) clearInterval(graphTimer);
             if (touchFxTimer) clearTimeout(touchFxTimer);
@@ -1531,6 +1566,7 @@
             const touchOverlay = document.getElementById('touch-effect-3');
             touchOverlay.classList.add('hidden');
             touchOverlay.innerHTML = '';
+            clearTouchRipples();
 
             document.getElementById('mascot-avatar').textContent = '🐣';
             const badge = document.getElementById('exp-badge');
@@ -1568,7 +1604,9 @@
             document.getElementById('heat-pill-top').classList.add('hidden');
 
             const kawaii = document.getElementById('kawaii-face-3');
-            kawaii.textContent = '😊'; kawaii.classList.remove('kawaii-active');
+            const emojiSpan = document.getElementById('kawaii-emoji-span');
+            emojiSpan.textContent = '😊';
+            kawaii.classList.remove('kawaii-active', 'kawaii-touch-zoom');
 
             const topRightBadge = document.getElementById('stage-top-right-badge');
             topRightBadge.innerHTML = '<span>🟢 <b class="font-semibold text-indigo-700">ระบบ (System):</b> สารเคมีในบีกเกอร์ 3</span><span class="hidden sm:inline">|</span><span>🟠 <b class="font-semibold text-orange-700">สิ่งแวดล้อม (Surroundings):</b> บีกเกอร์, เทอร์มอมิเตอร์, มือสัมผัส</span>';
@@ -1769,6 +1807,7 @@
                 const topRightBadge = document.getElementById('stage-top-right-badge');
                 const heatPillTop = document.getElementById('heat-pill-top');
                 const kawaii = document.getElementById('kawaii-face-3');
+                const emojiSpan = document.getElementById('kawaii-emoji-span');
 
                 heatPillTop.classList.remove('hidden');
                 kawaii.classList.add('kawaii-active');
@@ -1783,7 +1822,7 @@
 
                 if (isEndo) {
                     document.getElementById('mascot-avatar').textContent = '🥶';
-                    kawaii.textContent = '🥶❄️';
+                    emojiSpan.textContent = '🥶❄️';
                     liq3.style.background = 'linear-gradient(180deg, rgba(125,211,252,0.84) 0%, rgba(56,189,248,0.95) 100%)';
                     glass3.classList.add('glow-cold');
                     document.getElementById('reagent-stripe-3').className = 'reagent-stripe bg-sky-500';
@@ -1797,7 +1836,7 @@
                     document.getElementById('summary-footer-text').textContent = `✅ สรุป: ปฏิกิริยาดูดความร้อน (ระบบดึงความร้อนจากสิ่งแวดล้อม ทำให้อุณหภูมิลดลงเหลือ ${preset.tempFinal.toFixed(1)} °C)`;
                 } else {
                     document.getElementById('mascot-avatar').textContent = '🤩';
-                    kawaii.textContent = '🤩🔥';
+                    emojiSpan.textContent = '🤩🔥';
                     liq3.style.background = 'linear-gradient(180deg, rgba(253,164,175,0.84) 0%, rgba(251,113,133,0.95) 100%)';
                     glass3.classList.add('glow-hot');
                     document.getElementById('reagent-stripe-3').className = 'reagent-stripe bg-rose-500';
@@ -1818,54 +1857,56 @@
             }, 1750);
         }
 
-        // --- เอฟเฟกต์สัมผัสข้างบีกเกอร์ 3: หน้าต่างลอยเหนือตัวแจ้งอุณหภูมิและตัวดูด/คายความร้อน ---
+        // --- เอฟเฟกต์สัมผัสข้างบีกเกอร์ 3: วงคลื่นรัศมีอยู่กึ่งกลางตัวอิโมจิ 100% ---
         function touchBeaker3() {
             const preset = REACTION_PRESETS[currentPresetIndex];
             const overlay = document.getElementById('touch-effect-3');
             const anim3 = document.getElementById('beaker-anim-3');
+            const kawaii = document.getElementById('kawaii-face-3');
+            const r1 = document.getElementById('kawaii-ripple-1');
+            const r2 = document.getElementById('kawaii-ripple-2');
 
             if (touchFxTimer) clearTimeout(touchFxTimer);
             anim3.classList.remove('beaker-shiver-cold', 'beaker-pulse-hot');
-            void anim3.offsetWidth;
+            kawaii.classList.remove('kawaii-touch-zoom');
+            clearTouchRipples();
 
+            void anim3.offsetWidth;
+            void kawaii.offsetWidth;
+
+            kawaii.classList.add('kawaii-touch-zoom');
             overlay.classList.remove('hidden');
 
             if (!isMixed) {
                 playTone('beep');
+                r1.className = 'kawaii-ripple active-ripple border-4 border-slate-400 bg-slate-200/35';
+                r2.className = 'kawaii-ripple active-ripple-delayed border-2 border-slate-300';
                 overlay.innerHTML = `
                     <div class="touch-top-callout anim-top-callout cartoon-box-sm bg-slate-100 border-2 border-slate-900 px-2.5 py-1 text-center shadow-lg">
                         <div class="text-[11px] font-extrabold text-slate-800 single-line">😐 เฉยๆ (28.0 °C)</div>
                         <div class="text-[9.5px] font-medium text-slate-600 single-line">อุณหภูมิห้องปกติ ยังไม่ผสม</div>
                     </div>
-                    <div class="touch-center-hand">
-                        <div class="touch-ripple-ring border-4 border-slate-400"></div>
-                        <div class="anim-hand-tap text-2xl md:text-3xl drop-shadow-md">🤚😐</div>
-                    </div>
                 `;
             } else if (preset.type === 'endo') {
                 playTone('cold');
                 anim3.classList.add('beaker-shiver-cold');
+                r1.className = 'kawaii-ripple wide-emoji active-ripple border-4 border-sky-400 bg-sky-200/40';
+                r2.className = 'kawaii-ripple wide-emoji active-ripple-delayed border-2 border-sky-300';
                 overlay.innerHTML = `
                     <div class="touch-top-callout anim-top-callout cartoon-box-sm bg-sky-300 border-2 border-slate-900 px-2.5 py-1 text-center shadow-lg">
                         <div class="text-[11.5px] font-extrabold text-sky-950 single-line">❄️ เย็นจัด! (${preset.tempFinal.toFixed(1)} °C)</div>
                         <div class="text-[9.5px] font-semibold text-sky-950 bg-sky-100 px-1.5 rounded single-line">ระบบดูดความร้อนจากมือเรา</div>
                     </div>
-                    <div class="touch-center-hand">
-                        <div class="touch-ripple-ring border-4 border-sky-400 bg-sky-200/35"></div>
-                        <div class="anim-hand-tap text-2xl md:text-3xl drop-shadow-md">🤚🥶❄️</div>
-                    </div>
                 `;
             } else {
                 playTone('hot');
                 anim3.classList.add('beaker-pulse-hot');
+                r1.className = 'kawaii-ripple wide-emoji active-ripple border-4 border-orange-500 bg-orange-300/40';
+                r2.className = 'kawaii-ripple wide-emoji active-ripple-delayed border-2 border-amber-400';
                 overlay.innerHTML = `
                     <div class="touch-top-callout anim-top-callout cartoon-box-sm bg-orange-400 border-2 border-slate-900 px-2.5 py-1 text-center shadow-lg">
                         <div class="text-[11.5px] font-extrabold text-white drop-shadow-sm single-line">🔥 ร้อนจี๋! (${preset.tempFinal.toFixed(1)} °C)</div>
                         <div class="text-[9.5px] font-semibold text-amber-950 bg-amber-100 px-1.5 rounded single-line">ระบบคายความร้อนมาที่มือเรา</div>
-                    </div>
-                    <div class="touch-center-hand">
-                        <div class="touch-ripple-ring border-4 border-orange-500 bg-orange-300/35"></div>
-                        <div class="anim-hand-tap text-2xl md:text-3xl drop-shadow-md">🤚🥵🔥</div>
                     </div>
                 `;
             }
@@ -1874,6 +1915,8 @@
                 overlay.classList.add('hidden');
                 overlay.innerHTML = '';
                 anim3.classList.remove('beaker-shiver-cold', 'beaker-pulse-hot');
+                kawaii.classList.remove('kawaii-touch-zoom');
+                clearTouchRipples();
             }, 2800);
         }
 
