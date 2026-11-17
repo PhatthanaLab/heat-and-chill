@@ -2,7 +2,8 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- ปลดล็อกให้ซูมเข้า-ออกได้ปกติ และรองรับ Safe Area ของ iPhone/iPad -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Phatthana Lab: แล็บเคมีดูด-คายความร้อน</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -10,16 +11,24 @@
         * {
             box-sizing: border-box;
             font-family: 'Kanit', sans-serif;
-            user-select: none;
-            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        body {
+        html, body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            background-color: #eef6ff;
-            height: 100vh;
-            width: 100vw;
+            background-color: #e0f2fe;
+            min-height: 100dvh;
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* รองรับ Safe Area สำหรับมือถือที่มีรอยบาก / Dynamic Island */
+        body {
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         .cartoon-box {
@@ -68,7 +77,7 @@
             pointer-events: none;
             transition: all 0.24s cubic-bezier(0.34, 1.4, 0.64, 1);
             z-index: 100;
-            width: clamp(500px, 60vw, 680px);
+            width: min(94vw, 660px);
         }
         .dropdown-panel.open {
             transform: translateX(-50%) translateY(0) scale(1);
@@ -102,7 +111,7 @@
             border: 2px solid #0f172a;
             box-shadow: 2px 2px 0px #0f172a;
             border-radius: 9px;
-            padding: 2px 8px;
+            padding: 2px 7px;
             display: inline-flex;
             flex-direction: column;
             align-items: center;
@@ -112,13 +121,13 @@
             white-space: nowrap;
         }
         .eq-formula {
-            font-size: clamp(11px, 1.05vw, 14px);
+            font-size: clamp(10.5px, 1vw, 13.5px);
             font-weight: 600;
             color: #0f172a;
             white-space: nowrap;
         }
         .eq-sub {
-            font-size: clamp(9px, 0.75vw, 10.5px);
+            font-size: clamp(8.5px, 0.75vw, 10.5px);
             font-weight: 400;
             color: #475569;
             white-space: nowrap;
@@ -133,8 +142,8 @@
             transition: all 0.25s ease;
         }
         .horiz-thermo-bulb {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             background: #ef4444;
             border: 2.5px solid #0f172a;
             border-radius: 50%;
@@ -143,8 +152,8 @@
             flex-shrink: 0;
         }
         .horiz-thermo-stem {
-            width: 96px;
-            height: 11px;
+            width: 72px;
+            height: 10px;
             background: #ffffff;
             border: 2.5px solid #0f172a;
             border-left: none;
@@ -156,7 +165,7 @@
             align-items: center;
         }
         .horiz-thermo-mercury {
-            height: 4.5px;
+            height: 4px;
             width: 58%;
             background: #ef4444;
             border-radius: 0 4px 4px 0;
@@ -164,18 +173,18 @@
         .horiz-thermo-ticks {
             position: absolute;
             inset: 0;
-            background-image: repeating-linear-gradient(to right, transparent 0px, transparent 10px, rgba(15, 23, 42, 0.35) 10px, rgba(15, 23, 42, 0.35) 11.5px);
+            background-image: repeating-linear-gradient(to right, transparent 0px, transparent 8px, rgba(15, 23, 42, 0.35) 8px, rgba(15, 23, 42, 0.35) 9.5px);
             pointer-events: none;
         }
         .horiz-thermo-empty {
-            width: 112px;
+            width: 100px;
             height: 20px;
             border: 2px dashed #94a3b8;
             border-radius: 99px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 9.5px;
             font-weight: 500;
             color: #64748b;
             background: rgba(241, 245, 249, 0.7);
@@ -185,8 +194,11 @@
             font-weight: 500;
         }
 
+        /* ปรับขนาดบีกเกอร์ให้ยืดหยุ่นตามขนาดจอ ไม่ล้นกรอบ */
         .beaker-container {
-            width: clamp(156px, 16.5vw, 200px);
+            width: 31%;
+            max-width: 185px;
+            min-width: 115px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -204,23 +216,23 @@
         }
         .beaker-glass {
             width: 100%;
-            height: clamp(146px, 20.5vh, 178px);
-            border: 4px solid #0f172a;
+            height: clamp(125px, 18vh, 165px);
+            border: 3.5px solid #0f172a;
             border-top: none;
-            border-radius: 0 0 24px 24px;
+            border-radius: 0 0 22px 22px;
             background: linear-gradient(135deg, rgba(255,255,255,0.93) 0%, rgba(241,245,249,0.8) 100%);
             position: relative;
             overflow: hidden;
             box-shadow: 
-                inset 10px 0 0 rgba(255, 255, 255, 0.75),
-                inset -10px 0 0 rgba(203, 213, 225, 0.45),
-                4px 5px 0px rgba(15, 23, 42, 0.18);
+                inset 8px 0 0 rgba(255, 255, 255, 0.75),
+                inset -8px 0 0 rgba(203, 213, 225, 0.45),
+                3px 4px 0px rgba(15, 23, 42, 0.18);
             transition: box-shadow 0.4s ease, border-color 0.4s ease;
         }
         .beaker-lip {
-            width: calc(100% + 14px);
-            height: 10px;
-            border: 4px solid #0f172a;
+            width: calc(100% + 10px);
+            height: 9px;
+            border: 3.5px solid #0f172a;
             border-radius: 8px;
             background: linear-gradient(to right, #f8fafc, #ffffff, #e2e8f0);
             z-index: 10;
@@ -231,7 +243,7 @@
             left: 0;
             width: 100%;
             transition: height 0.55s ease, background 0.55s ease;
-            border-top: 3.5px solid #0f172a;
+            border-top: 3px solid #0f172a;
         }
         .beaker-liquid::before {
             content: '';
@@ -239,7 +251,7 @@
             top: 3px;
             left: 8%;
             width: 84%;
-            height: 5px;
+            height: 4px;
             background: rgba(255, 255, 255, 0.55);
             border-radius: 99px;
         }
@@ -248,9 +260,9 @@
             bottom: 0;
             left: 12%;
             width: 76%;
-            height: 32px;
+            height: 28px;
             background: radial-gradient(circle at 50% 30%, #ffffff 10%, #e2e8f0 90%);
-            border: 3.5px solid #0f172a;
+            border: 3px solid #0f172a;
             border-bottom: none;
             border-radius: 55% 55% 0 0;
             transition: all 0.45s ease;
@@ -258,10 +270,10 @@
 
         .kawaii-face {
             position: absolute;
-            top: 22px;
+            top: 16px;
             left: 52%;
             transform: translateX(-50%);
-            font-size: 16px;
+            font-size: 15px;
             z-index: 14;
             pointer-events: none;
             filter: drop-shadow(0 2px 0 rgba(255,255,255,0.8));
@@ -277,14 +289,14 @@
 
         .grad-marks {
             position: absolute;
-            right: 5px;
-            top: 14px;
-            bottom: 48px;
+            right: 4px;
+            top: 10px;
+            bottom: 44px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: flex-end;
-            font-size: 9px;
+            font-size: 8.5px;
             font-weight: 600;
             color: #475569;
             z-index: 8;
@@ -297,8 +309,8 @@
         }
         .grad-line::after {
             content: '';
-            width: 5px;
-            height: 2px;
+            width: 4px;
+            height: 1.5px;
             background: #334155;
             border-radius: 2px;
             display: inline-block;
@@ -306,15 +318,15 @@
 
         .reagent-badge {
             position: absolute;
-            bottom: 7px;
-            left: 8px;
-            right: 8px;
+            bottom: 5px;
+            left: 5px;
+            right: 5px;
             background: rgba(255, 255, 255, 0.97);
-            border: 2.5px solid #0f172a;
-            border-radius: 9px;
+            border: 2px solid #0f172a;
+            border-radius: 8px;
             overflow: hidden;
             z-index: 30;
-            box-shadow: 2px 2px 0px #0f172a;
+            box-shadow: 1.5px 1.5px 0px #0f172a;
             pointer-events: none;
             display: flex;
             flex-direction: column;
@@ -322,28 +334,28 @@
         }
         .reagent-stripe {
             width: 100%;
-            height: 4px;
+            height: 3.5px;
             border-bottom: 1.5px solid #0f172a;
         }
         .reagent-body {
-            padding: 2px 6px 3px 6px;
+            padding: 1.5px 4px 2px 4px;
             text-align: center;
             width: 100%;
         }
         .reagent-formula {
             font-weight: 600;
-            font-size: clamp(10.5px, 0.92vw, 12.5px);
+            font-size: clamp(9.5px, 0.88vw, 12px);
             color: #0f172a;
-            line-height: 1.2;
+            line-height: 1.15;
             white-space: nowrap !important;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .reagent-name {
             font-weight: 400;
-            font-size: clamp(9.5px, 0.8vw, 11px);
+            font-size: clamp(8.5px, 0.75vw, 10.5px);
             color: #334155;
-            line-height: 1.15;
+            line-height: 1.1;
             white-space: nowrap !important;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -351,10 +363,10 @@
 
         .thermometer-widget {
             position: absolute;
-            left: 12px;
-            top: -22px;
-            width: 22px;
-            height: 118px;
+            left: 8px;
+            top: -18px;
+            width: 20px;
+            height: 100px;
             z-index: 25;
             display: flex;
             flex-direction: column;
@@ -362,10 +374,10 @@
             pointer-events: none;
         }
         .thermo-stem {
-            width: 12px;
-            height: 94px;
+            width: 11px;
+            height: 80px;
             background: #ffffff;
-            border: 3px solid #0f172a;
+            border: 2.5px solid #0f172a;
             border-bottom: none;
             border-radius: 10px 10px 0 0;
             position: relative;
@@ -375,28 +387,28 @@
             justify-content: center;
         }
         .thermo-mercury {
-            width: 5px;
+            width: 4.5px;
             background: #ef4444;
             transition: height 0.5s ease, background-color 0.3s ease;
             border-radius: 4px 4px 0 0;
         }
         .thermo-bulb {
-            width: 21px;
-            height: 21px;
+            width: 19px;
+            height: 19px;
             background: #ef4444;
-            border: 3px solid #0f172a;
+            border: 2.5px solid #0f172a;
             border-radius: 50%;
-            margin-top: -4px;
+            margin-top: -3px;
             box-shadow: inset -2px -2px 0 rgba(0,0,0,0.25);
             transition: background-color 0.3s ease;
         }
 
         .pour-stream {
             position: absolute;
-            top: -55px;
+            top: -50px;
             left: 50%;
             transform: translateX(-50%);
-            width: 10px;
+            width: 9px;
             height: 0px;
             background: linear-gradient(to bottom, #bae6fd, #38bdf8);
             border-left: 2px solid #0284c7;
@@ -407,25 +419,25 @@
             pointer-events: none;
         }
         .pour-stream.active {
-            height: 165px;
+            height: 145px;
         }
 
         .glow-cold {
-            box-shadow: 0 0 28px 9px rgba(56, 189, 248, 0.78), inset 0 0 18px rgba(56, 189, 248, 0.45) !important;
+            box-shadow: 0 0 24px 7px rgba(56, 189, 248, 0.78), inset 0 0 15px rgba(56, 189, 248, 0.45) !important;
             border-color: #0284c7 !important;
         }
         .glow-hot {
-            box-shadow: 0 0 28px 9px rgba(249, 115, 22, 0.78), inset 0 0 18px rgba(239, 68, 68, 0.45) !important;
+            box-shadow: 0 0 24px 7px rgba(249, 115, 22, 0.78), inset 0 0 15px rgba(239, 68, 68, 0.45) !important;
             border-color: #ea580c !important;
         }
 
         @keyframes bubbleRise {
             0% { transform: translateY(0) scale(0.6); opacity: 0.95; }
-            100% { transform: translateY(-95px) scale(1.25); opacity: 0; }
+            100% { transform: translateY(-85px) scale(1.25); opacity: 0; }
         }
         .co2-bubble {
             position: absolute;
-            bottom: 45px;
+            bottom: 40px;
             background: rgba(255, 255, 255, 0.92);
             border: 2px solid #0284c7;
             border-radius: 50%;
@@ -439,11 +451,12 @@
             animation: floatBadge 1.3s infinite ease-in-out;
         }
 
+        /* Portrait Warning Overlay เฉพาะจอแคบแนวตั้ง แต่กดปิดเพื่อเลื่อนดูได้ */
         #orientation-overlay {
             display: none;
         }
-        @media screen and (max-width: 920px) and (orientation: portrait) {
-            #orientation-overlay {
+        @media screen and (max-width: 640px) and (orientation: portrait) {
+            #orientation-overlay.active-warning {
                 display: flex !important;
             }
         }
@@ -454,213 +467,222 @@
         .phone-tilt-icon {
             animation: tiltPhone 2s infinite ease-in-out;
         }
+
+        /* Responsive Fixes สำหรับ iPad และมือถือแนวนอนที่มีความสูงน้อย */
+        @media screen and (max-height: 700px) {
+            .beaker-glass {
+                height: 122px;
+            }
+            .thermometer-widget {
+                height: 86px;
+            }
+            .thermo-stem {
+                height: 68px;
+            }
+        }
     </style>
 </head>
-<body class="flex flex-col h-screen w-screen overflow-hidden select-none">
+<body class="flex flex-col min-h-[100dvh] w-full">
 
     <!-- 1. PORTRAIT ORIENTATION WARNING OVERLAY -->
-    <div id="orientation-overlay" class="fixed inset-0 bg-slate-900/95 z-[999] flex-col items-center justify-center text-white p-6 text-center">
+    <div id="orientation-overlay" class="active-warning fixed inset-0 bg-slate-900/95 z-[999] flex-col items-center justify-center text-white p-6 text-center">
         <div class="phone-tilt-icon text-6xl mb-4">📱🔄</div>
-        <h2 class="text-2xl font-bold text-amber-400 mb-2">กรุณาหมุนหน้าจอเป็นแนวนอน (Landscape)</h2>
-        <p class="text-slate-200 max-w-md text-base mb-5">
-            สื่อการสอน <b>Phatthana Lab</b> ออกแบบมาให้แสดงผลโต๊ะปฏิบัติการเคมีคู่กับกราฟพลังงานในหน้าจอเดียว เพื่อความชัดเจนสูงสุดบนโทรศัพท์มือถือและ iPad ครับ
+        <h2 class="text-xl md:text-2xl font-bold text-amber-400 mb-2">แนะนำให้หมุนหน้าจอเป็นแนวนอน (Landscape)</h2>
+        <p class="text-slate-200 max-w-md text-sm md:text-base mb-5">
+            สื่อการสอน <b>Phatthana Lab</b> ออกแบบมาให้แสดงผลโต๊ะปฏิบัติการเคมีคู่กับกราฟพลังงาน เพื่อความชัดเจนสูงสุดบนโทรศัพท์มือถือและ iPad ครับ
         </p>
-        <button onclick="document.getElementById('orientation-overlay').style.display='none'" class="cartoon-btn bg-amber-400 text-slate-900 px-5 py-2 text-sm">
-            ดำเนินการต่อในแนวตั้ง (ไม่แนะนำ)
+        <button onclick="document.getElementById('orientation-overlay').classList.remove('active-warning')" class="cartoon-btn bg-amber-400 text-slate-900 px-5 py-2 text-sm font-semibold">
+            ใช้งานต่อในแนวตั้ง (เลื่อนหน้าจอขึ้น-ลงได้)
         </button>
     </div>
 
-    <!-- 2. TOP NAVIGATION BAR (พร้อมเมนูสไลด์ลงแยกประเภทดูด-คายความร้อนชัดเจน) -->
-    <header class="h-[58px] bg-amber-300 border-b-4 border-slate-900 px-3 flex items-center justify-between gap-3 shrink-0 z-40 relative">
+    <!-- 2. TOP NAVIGATION BAR (Responsive ไม่ล้นขอบจอในมือถือและ iPad) -->
+    <header class="min-h-[52px] py-1.5 bg-amber-300 border-b-4 border-slate-900 px-2 md:px-3 flex flex-wrap items-center justify-between gap-1.5 md:gap-2 shrink-0 z-40 relative">
         <!-- Brand Logo & Title -->
-        <div class="flex items-center gap-2.5 shrink-0">
-            <div class="w-10 h-10 rounded-xl bg-amber-500 border-2 border-slate-900 flex items-center justify-center text-xl shadow-[2px_2px_0px_#0f172a]">
+        <div class="flex items-center gap-2 shrink-0">
+            <div class="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-amber-500 border-2 border-slate-900 flex items-center justify-center text-base md:text-lg shadow-[2px_2px_0px_#0f172a]">
                 🧪
             </div>
             <div>
-                <h1 class="font-bold text-slate-900 text-sm md:text-base leading-tight single-line">Phatthana Lab ✨</h1>
-                <p class="text-[11px] text-slate-800 font-medium leading-none single-line mt-0.5">แล็บเคมีดูด-คายความร้อน</p>
+                <h1 class="font-bold text-slate-900 text-xs sm:text-sm md:text-base leading-tight single-line">Phatthana Lab ✨</h1>
+                <p class="text-[10px] md:text-[11px] text-slate-800 font-medium leading-none single-line mt-0.5">แล็บเคมีดูด-คายความร้อน</p>
             </div>
         </div>
 
         <!-- Slide-Down Reaction Selector Dropdown -->
-        <div class="relative flex-1 max-w-xl flex justify-center" id="reaction-dropdown-wrapper">
-            <button id="dropdown-trigger-btn" onclick="toggleReactionDropdown(event)" class="cartoon-btn w-full max-w-md bg-white hover:bg-amber-50 px-3.5 py-1.5 flex items-center justify-between gap-2 text-xs md:text-sm">
-                <div class="flex items-center gap-2 min-w-0">
-                    <span class="font-bold text-slate-700 shrink-0">🧪 เลือกคู่สาร:</span>
-                    <span id="current-preset-type-pill" class="px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-sky-200 text-sky-950 border border-slate-900 shrink-0">
+        <div class="relative flex-1 min-w-[200px] max-w-md flex justify-center" id="reaction-dropdown-wrapper">
+            <button id="dropdown-trigger-btn" onclick="toggleReactionDropdown(event)" class="cartoon-btn w-full bg-white hover:bg-amber-50 px-2.5 py-1 flex items-center justify-between gap-1.5 text-[11px] md:text-xs">
+                <div class="flex items-center gap-1.5 min-w-0">
+                    <span class="font-bold text-slate-700 hidden sm:inline shrink-0">🧪 เลือกคู่สาร:</span>
+                    <span id="current-preset-type-pill" class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-sky-200 text-sky-950 border border-slate-900 shrink-0">
                         ❄️ ดูดความร้อน
                     </span>
                     <span id="current-preset-label" class="font-semibold text-slate-900 single-line">
                         1. น้ำส้มสายชู + เบกกิ้งโซดา
                     </span>
                 </div>
-                <span id="dropdown-chevron" class="chevron-icon text-slate-900 font-bold text-xs shrink-0">▼</span>
+                <span id="dropdown-chevron" class="chevron-icon text-slate-900 font-bold text-[10px] shrink-0">▼</span>
             </button>
 
-            <!-- Slide-Down Panel: แยกประเภทดูดความร้อน และ คายความร้อน 2 คอลัมน์ชัดเจน -->
-            <div id="reaction-dropdown-panel" class="dropdown-panel cartoon-box p-3 bg-white">
-                <div class="flex items-center justify-between border-b-2 border-slate-200 pb-2 mb-2.5">
+            <!-- Slide-Down Panel: แยกประเภทดูดความร้อน และ คายความร้อน -->
+            <div id="reaction-dropdown-panel" class="dropdown-panel cartoon-box p-2.5 md:p-3 bg-white max-h-[80vh] overflow-y-auto">
+                <div class="flex items-center justify-between border-b-2 border-slate-200 pb-1.5 mb-2">
                     <span class="text-xs font-bold text-slate-800">📋 เลือกชุดการทดลอง (แยกตามประเภทการเปลี่ยนแปลงพลังงาน)</span>
-                    <span class="text-[10.5px] text-slate-500 font-medium">คลิกเลือกคู่สารเพื่อเริ่มทำการทดลอง</span>
+                    <button onclick="closeReactionDropdown()" class="text-xs font-bold text-rose-600 px-1.5">✖ ปิด</button>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     <!-- Column 1: Endothermic (ดูดความร้อน) -->
-                    <div class="bg-sky-50 border-2 border-sky-800 rounded-xl p-2.5 flex flex-col gap-1.5">
-                        <div class="flex items-center justify-between border-b border-sky-200 pb-1 mb-0.5">
-                            <span class="text-xs font-extrabold text-sky-950 flex items-center gap-1">
-                                ❄️ ปฏิกิริยาดูดความร้อน
-                            </span>
-                            <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-sky-200 text-sky-900 border border-sky-600">
-                                ΔH &gt; 0 (เย็นลง)
-                            </span>
+                    <div class="bg-sky-50 border-2 border-sky-800 rounded-xl p-2 flex flex-col gap-1.5">
+                        <div class="flex items-center justify-between border-b border-sky-200 pb-1">
+                            <span class="text-xs font-extrabold text-sky-950">❄️ ปฏิกิริยาดูดความร้อน</span>
+                            <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-sky-200 text-sky-900 border border-sky-600">ΔH &gt; 0 (เย็นลง)</span>
                         </div>
 
-                        <button id="preset-btn-0" onclick="selectPreset(0)" class="cartoon-btn w-full text-left px-2.5 py-1.5 text-xs flex items-center justify-between bg-sky-300 text-slate-900 font-semibold">
+                        <button id="preset-btn-0" onclick="selectPreset(0)" class="cartoon-btn w-full text-left px-2 py-1.5 text-[11px] flex items-center justify-between bg-sky-300 text-slate-900 font-semibold">
                             <span>1. น้ำส้มสายชู + เบกกิ้งโซดา</span>
-                            <span class="text-[10px] opacity-80">CH₃COOH + NaHCO₃</span>
+                            <span class="text-[9.5px] opacity-80">CH₃COOH + NaHCO₃</span>
                         </button>
-                        <button id="preset-btn-2" onclick="selectPreset(2)" class="cartoon-btn w-full text-left px-2.5 py-1.5 text-xs flex items-center justify-between bg-white hover:bg-sky-100 text-slate-700">
+                        <button id="preset-btn-2" onclick="selectPreset(2)" class="cartoon-btn w-full text-left px-2 py-1.5 text-[11px] flex items-center justify-between bg-white hover:bg-sky-100 text-slate-700">
                             <span>3. แอมโมเนียมคลอไรด์ + น้ำ</span>
-                            <span class="text-[10px] opacity-80">NH₄Cl + H₂O</span>
+                            <span class="text-[9.5px] opacity-80">NH₄Cl + H₂O</span>
                         </button>
-                        <button id="preset-btn-4" onclick="selectPreset(4)" class="cartoon-btn w-full text-left px-2.5 py-1.5 text-xs flex items-center justify-between bg-white hover:bg-sky-100 text-slate-700">
+                        <button id="preset-btn-4" onclick="selectPreset(4)" class="cartoon-btn w-full text-left px-2 py-1.5 text-[11px] flex items-center justify-between bg-white hover:bg-sky-100 text-slate-700">
                             <span>5. กรดซิตริก + เบกกิ้งโซดา</span>
-                            <span class="text-[10px] opacity-80">C₆H₈O₇ + NaHCO₃</span>
+                            <span class="text-[9.5px] opacity-80">C₆H₈O₇ + NaHCO₃</span>
                         </button>
                     </div>
 
                     <!-- Column 2: Exothermic (คายความร้อน) -->
-                    <div class="bg-rose-50 border-2 border-rose-800 rounded-xl p-2.5 flex flex-col gap-1.5">
-                        <div class="flex items-center justify-between border-b border-rose-200 pb-1 mb-0.5">
-                            <span class="text-xs font-extrabold text-rose-950 flex items-center gap-1">
-                                🔥 ปฏิกิริยาคายความร้อน
-                            </span>
-                            <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-rose-200 text-rose-900 border border-rose-600">
-                                ΔH &lt; 0 (ร้อนขึ้น)
-                            </span>
+                    <div class="bg-rose-50 border-2 border-rose-800 rounded-xl p-2 flex flex-col gap-1.5">
+                        <div class="flex items-center justify-between border-b border-rose-200 pb-1">
+                            <span class="text-xs font-extrabold text-rose-950">🔥 ปฏิกิริยาคายความร้อน</span>
+                            <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-rose-200 text-rose-900 border border-rose-600">ΔH &lt; 0 (ร้อนขึ้น)</span>
                         </div>
 
-                        <button id="preset-btn-1" onclick="selectPreset(1)" class="cartoon-btn w-full text-left px-2.5 py-1.5 text-xs flex items-center justify-between bg-white hover:bg-rose-100 text-slate-700">
+                        <button id="preset-btn-1" onclick="selectPreset(1)" class="cartoon-btn w-full text-left px-2 py-1.5 text-[11px] flex items-center justify-between bg-white hover:bg-rose-100 text-slate-700">
                             <span>2. น้ำส้มสายชู + โซดาไฟ</span>
-                            <span class="text-[10px] opacity-80">CH₃COOH + NaOH</span>
+                            <span class="text-[9.5px] opacity-80">CH₃COOH + NaOH</span>
                         </button>
-                        <button id="preset-btn-3" onclick="selectPreset(3)" class="cartoon-btn w-full text-left px-2.5 py-1.5 text-xs flex items-center justify-between bg-white hover:bg-rose-100 text-slate-700">
+                        <button id="preset-btn-3" onclick="selectPreset(3)" class="cartoon-btn w-full text-left px-2 py-1.5 text-[11px] flex items-center justify-between bg-white hover:bg-rose-100 text-slate-700">
                             <span>4. แคลเซียมคลอไรด์ + น้ำ</span>
-                            <span class="text-[10px] opacity-80">CaCl₂ + H₂O</span>
+                            <span class="text-[9.5px] opacity-80">CaCl₂ + H₂O</span>
                         </button>
-                        <button id="preset-btn-5" onclick="selectPreset(5)" class="cartoon-btn w-full text-left px-2.5 py-1.5 text-xs flex items-center justify-between bg-white hover:bg-rose-100 text-slate-700">
+                        <button id="preset-btn-5" onclick="selectPreset(5)" class="cartoon-btn w-full text-left px-2 py-1.5 text-[11px] flex items-center justify-between bg-white hover:bg-rose-100 text-slate-700">
                             <span>6. กรดเกลือ + แมกนีเซียม</span>
-                            <span class="text-[10px] opacity-80">HCl + Mg</span>
+                            <span class="text-[9.5px] opacity-80">HCl + Mg</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Action Utility Buttons -->
-        <div class="flex items-center gap-1.5 shrink-0">
-            <button onclick="toggleParticleModal()" class="cartoon-btn px-2.5 py-1 text-[11px] bg-purple-200 text-slate-900">
+        <!-- Action Utility Buttons (กระชับไม่ล้นขอบขวา) -->
+        <div class="flex items-center gap-1 md:gap-1.5 shrink-0">
+            <button onclick="toggleParticleModal()" class="cartoon-btn px-2 py-1 text-[10.5px] md:text-[11px] bg-purple-200 text-slate-900">
                 🔬 อนุภาค
             </button>
-            <button onclick="toggleQuizModal()" class="cartoon-btn px-2.5 py-1 text-[11px] bg-amber-100 text-slate-900">
-                📝 ควิซ (3 ข้อ)
+            <button onclick="toggleQuizModal()" class="cartoon-btn px-2 py-1 text-[10.5px] md:text-[11px] bg-amber-100 text-slate-900">
+                📝 ควิซ
             </button>
-            <button id="btn-sound" onclick="toggleSound()" class="cartoon-btn px-2 py-1 text-[11px] bg-emerald-300 text-slate-900">
+            <button id="btn-sound" onclick="toggleSound()" class="cartoon-btn px-2 py-1 text-[10.5px] md:text-[11px] bg-emerald-300 text-slate-900">
                 🔊 เสียง
             </button>
-            <button onclick="resetExperiment()" class="cartoon-btn px-2.5 py-1 text-[11px] bg-rose-400 text-white">
+            <button onclick="resetExperiment()" class="cartoon-btn px-2 py-1 text-[10.5px] md:text-[11px] bg-rose-400 text-white">
                 🔄 รีเซ็ต
             </button>
         </div>
     </header>
 
-    <!-- 3. MAIN WORKSPACE -->
-    <main class="flex-1 flex overflow-hidden p-2.5 gap-2.5 bg-sky-50">
+    <!-- 3. MAIN WORKSPACE (ยืดหยุ่น: เลื่อนขึ้น-ลงได้ถ้าจอแคบ และไม่ตัดขอบล่างใน iPad) -->
+    <main class="flex-1 flex flex-col lg:flex-row p-2 gap-2 bg-sky-50 w-full max-w-[1600px] mx-auto">
 
         <!-- LEFT COLUMN: LAB BENCH -->
-        <section class="w-[56%] h-full flex flex-col gap-2 overflow-hidden">
+        <section class="w-full lg:w-[55%] flex flex-col gap-2 shrink-0">
 
-            <div class="cartoon-box p-2.5 bg-white flex flex-col gap-1.5 shrink-0">
-                <div class="flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-2 min-w-0">
-                        <div id="mascot-avatar" class="w-9 h-9 rounded-xl bg-amber-200 border-2 border-slate-900 flex items-center justify-center text-xl shrink-0 shadow-[2px_2px_0px_#0f172a]">
+            <!-- Step & Chemical Equation Box -->
+            <div class="cartoon-box p-2 bg-white flex flex-col gap-1.5 shrink-0">
+                <div class="flex flex-wrap items-center justify-between gap-1.5">
+                    <div class="flex items-center gap-2 min-w-0 flex-1">
+                        <div id="mascot-avatar" class="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-amber-200 border-2 border-slate-900 flex items-center justify-center text-lg shrink-0 shadow-[2px_2px_0px_#0f172a]">
                             🐣
                         </div>
-                        <div class="min-w-0">
-                            <div class="flex items-center gap-1.5">
-                                <span id="exp-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded bg-sky-200 border-2 border-slate-900 text-slate-900 single-line">
-                                    ชุดการทดลองที่ 1: ปฏิกิริยาดูดความร้อน
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span id="exp-badge" class="text-[10.5px] md:text-[11px] font-semibold px-2 py-0.5 rounded bg-sky-200 border-2 border-slate-900 text-slate-900 single-line max-w-full">
+                                    ชุดที่ 1 (ดูดความร้อน): น้ำส้มสายชู + เบกกิ้งโซดา
                                 </span>
-                                <span id="step-counter" class="text-xs font-semibold text-amber-600 single-line">[ขั้นตอนที่ 1/4]</span>
+                                <span id="step-counter" class="text-[11px] font-semibold text-amber-600 shrink-0">[ขั้นตอนที่ 1/4]</span>
                             </div>
-                            <p id="instruction-text" class="text-xs font-medium text-slate-800 single-line mt-0.5">
+                            <p id="instruction-text" class="text-[11px] md:text-xs font-medium text-slate-800 truncate mt-0.5">
                                 คลิกวัดอุณหภูมิที่ "บีกเกอร์ 1" และ "บีกเกอร์ 2" เพื่อบันทึกอุณหภูมิเริ่มต้น (28.0 °C)
                             </p>
                         </div>
                     </div>
 
-                    <div id="touch-status-card" class="cartoon-box-sm px-2.5 py-1 bg-amber-50 text-[11px] w-[235px] shrink-0">
+                    <div id="touch-status-card" class="cartoon-box-sm px-2 py-1 bg-amber-50 text-[10.5px] w-full sm:w-auto sm:min-w-[210px] shrink-0">
                         <div class="font-semibold text-slate-900 single-line">🤚 สัมผัสข้างบีกเกอร์ 3 (สิ่งแวดล้อม):</div>
                         <div id="touch-status-text" class="text-slate-600 font-normal single-line">ยังไม่ได้สัมผัส (กดปุ่มสัมผัสหลังผสม)</div>
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-r from-slate-100 via-sky-50 to-slate-100 border-2 border-slate-900 rounded-xl px-2.5 py-1.5 flex items-center justify-center overflow-x-auto">
-                    <div id="chem-equation-display" class="flex items-center gap-1.5 justify-center whitespace-nowrap"></div>
+                <div class="bg-gradient-to-r from-slate-100 via-sky-50 to-slate-100 border-2 border-slate-900 rounded-xl px-2 py-1 flex items-center justify-start sm:justify-center overflow-x-auto">
+                    <div id="chem-equation-display" class="flex items-center gap-1 md:gap-1.5 justify-center whitespace-nowrap mx-auto"></div>
                 </div>
             </div>
 
             <!-- Interactive Lab Stage -->
-            <div class="cartoon-box lab-grid flex-1 relative flex flex-col justify-between p-3 overflow-hidden">
+            <div class="cartoon-box lab-grid flex-1 min-h-[310px] relative flex flex-col justify-between p-2 md:p-2.5 overflow-hidden">
 
-                <div class="flex items-center justify-between gap-2 z-20 flex-wrap">
-                    <div class="cartoon-box-sm bg-white px-2.5 py-1 flex items-center gap-2 shrink-0">
-                        <span class="text-xs font-semibold text-slate-900 single-line">🌡️ เทอร์มอมิเตอร์:</span>
-                        <span id="thermo-location-badge" class="text-[11px] font-medium px-2 py-0.5 rounded bg-slate-200 border border-slate-800 single-line">
-                            อยู่บนแท่นวาง
-                        </span>
-                        <button onclick="moveThermometer(0)" class="cartoon-btn px-2 py-0.5 text-[11px] bg-slate-100 hover:bg-slate-200">
-                            ⬆️ เก็บเข้าแท่นวาง
-                        </button>
+                <!-- Top Stage Controls -->
+                <div class="flex flex-col gap-1.5 z-20">
+                    <div class="flex items-center justify-between gap-1.5 flex-wrap">
+                        <div class="cartoon-box-sm bg-white px-2 py-1 flex items-center gap-1.5 flex-wrap">
+                            <span class="text-[11px] font-semibold text-slate-900">🌡️ เทอร์มอมิเตอร์:</span>
+                            <span id="thermo-location-badge" class="text-[10.5px] font-medium px-1.5 py-0.5 rounded bg-slate-200 border border-slate-800">
+                                อยู่บนแท่นวาง
+                            </span>
+                            <button onclick="moveThermometer(0)" class="cartoon-btn px-2 py-0.5 text-[10.5px] bg-slate-100 hover:bg-slate-200">
+                                ⬆️ เก็บเข้าแท่นวาง
+                            </button>
 
-                        <div class="pl-2 ml-0.5 border-l-2 border-slate-200 flex items-center">
-                            <div id="dock-thermo-graphic" onclick="moveThermometer(1)" title="คลิกเพื่อนำไปจุ่มวัดบีกเกอร์ 1" class="horiz-thermo-wrap cursor-pointer hover:scale-105">
-                                <div class="horiz-thermo-bulb"></div>
-                                <div class="horiz-thermo-stem">
-                                    <div class="horiz-thermo-mercury"></div>
-                                    <div class="horiz-thermo-ticks"></div>
+                            <div class="pl-1.5 ml-0.5 border-l-2 border-slate-200 flex items-center">
+                                <div id="dock-thermo-graphic" onclick="moveThermometer(1)" title="คลิกเพื่อนำไปจุ่มวัดบีกเกอร์ 1" class="horiz-thermo-wrap cursor-pointer hover:scale-105">
+                                    <div class="horiz-thermo-bulb"></div>
+                                    <div class="horiz-thermo-stem">
+                                        <div class="horiz-thermo-mercury"></div>
+                                        <div class="horiz-thermo-ticks"></div>
+                                    </div>
+                                    <span class="ml-1 text-[10px] font-medium text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-500">
+                                        28.0 °C
+                                    </span>
                                 </div>
-                                <span class="ml-1.5 text-[10.5px] font-medium text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-500 single-line">
-                                    28.0 °C (พร้อมใช้)
-                                </span>
-                            </div>
 
-                            <div id="dock-thermo-empty" class="hidden horiz-thermo-empty">
-                                <span>กำลังจุ่มวัดในบีกเกอร์...</span>
+                                <div id="dock-thermo-empty" class="hidden horiz-thermo-empty">
+                                    <span>กำลังวัดในบีกเกอร์...</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- System vs Surroundings Legend Box -->
-                    <div id="stage-top-right-badge" class="cartoon-box-sm px-2.5 py-1 bg-white text-[11px] font-medium text-slate-800 flex items-center gap-1.5 single-line border-2 border-indigo-900">
+                    <div id="stage-top-right-badge" class="cartoon-box-sm px-2 py-1 bg-white text-[10.5px] font-medium text-slate-800 flex items-center gap-1.5 flex-wrap border-2 border-indigo-900 w-fit">
                         <span>🟢 <b class="font-semibold text-indigo-700">ระบบ (System):</b> สารเคมีในบีกเกอร์ 3</span>
-                        <span>|</span>
+                        <span class="hidden sm:inline">|</span>
                         <span>🟠 <b class="font-semibold text-orange-700">สิ่งแวดล้อม (Surroundings):</b> บีกเกอร์, เทอร์มอมิเตอร์, มือสัมผัส</span>
                     </div>
                 </div>
 
                 <!-- THREE BEAKERS STAGE -->
-                <div class="flex items-end justify-around w-full px-1 pb-1 mt-auto">
+                <div class="flex items-end justify-around w-full px-0.5 pb-0.5 mt-4 pt-3">
 
                     <!-- BEAKER 1 -->
                     <div class="beaker-container" id="beaker-col-1">
-                        <div class="h-9 flex items-center justify-center mb-1 w-full">
-                            <button id="slot-btn-1" onclick="moveThermometer(1)" class="cartoon-btn bg-sky-100 hover:bg-sky-200 border-dashed text-sky-950 px-2.5 py-0.5 text-[11px] single-line">
+                        <div class="h-8 flex items-center justify-center mb-1 w-full">
+                            <button id="slot-btn-1" onclick="moveThermometer(1)" class="cartoon-btn bg-sky-100 hover:bg-sky-200 border-dashed text-sky-950 px-2 py-0.5 text-[10px] single-line">
                                 🌡️ ⬇️ จุ่มวัดบีกเกอร์ 1
                             </button>
-                            <div id="active-badge-1" class="hidden cartoon-box-sm bg-emerald-300 px-2.5 py-0.5 text-[11px] font-semibold text-slate-900 single-line ml-6">
+                            <div id="active-badge-1" class="hidden cartoon-box-sm bg-emerald-300 px-2 py-0.5 text-[10px] font-semibold text-slate-900 single-line ml-4">
                                 🌡️ 28.0 °C
                             </div>
                         </div>
@@ -691,24 +713,24 @@
                             </div>
                         </div>
 
-                        <div class="cartoon-box-sm bg-white w-full h-[104px] p-2 mt-2 flex flex-col justify-between text-center">
-                            <div id="card-title-1" class="text-xs font-semibold text-slate-900 single-line">บีกเกอร์ 1: กรดแอซีติก</div>
-                            <div id="status-pill-1" class="text-[11px] font-medium py-0.5 px-2 rounded bg-slate-100 border border-slate-400 text-slate-600 single-line">
+                        <div class="cartoon-box-sm bg-white w-full h-[92px] p-1.5 mt-1.5 flex flex-col justify-between text-center">
+                            <div id="card-title-1" class="text-[11px] font-semibold text-slate-900 single-line">บีกเกอร์ 1: กรดแอซีติก</div>
+                            <div id="status-pill-1" class="text-[10px] font-medium py-0.5 px-1.5 rounded bg-slate-100 border border-slate-400 text-slate-600 single-line">
                                 ยังไม่ได้วัดอุณหภูมิ
                             </div>
-                            <button onclick="moveThermometer(1)" class="cartoon-btn bg-sky-300 text-slate-900 py-1 text-xs w-full single-line">
-                                🌡️ วัดอุณหภูมิบีกเกอร์ 1
+                            <button onclick="moveThermometer(1)" class="cartoon-btn bg-sky-300 text-slate-900 py-1 text-[10.5px] w-full single-line">
+                                🌡️ วัดอุณหภูมิ 1
                             </button>
                         </div>
                     </div>
 
                     <!-- BEAKER 2 -->
                     <div class="beaker-container" id="beaker-col-2">
-                        <div class="h-9 flex items-center justify-center mb-1 w-full">
-                            <button id="slot-btn-2" onclick="moveThermometer(2)" class="cartoon-btn bg-sky-100 hover:bg-sky-200 border-dashed text-sky-950 px-2.5 py-0.5 text-[11px] single-line">
+                        <div class="h-8 flex items-center justify-center mb-1 w-full">
+                            <button id="slot-btn-2" onclick="moveThermometer(2)" class="cartoon-btn bg-sky-100 hover:bg-sky-200 border-dashed text-sky-950 px-2 py-0.5 text-[10px] single-line">
                                 🌡️ ⬇️ จุ่มวัดบีกเกอร์ 2
                             </button>
-                            <div id="active-badge-2" class="hidden cartoon-box-sm bg-emerald-300 px-2.5 py-0.5 text-[11px] font-semibold text-slate-900 single-line ml-6">
+                            <div id="active-badge-2" class="hidden cartoon-box-sm bg-emerald-300 px-2 py-0.5 text-[10px] font-semibold text-slate-900 single-line ml-4">
                                 🌡️ 28.0 °C
                             </div>
                         </div>
@@ -740,27 +762,27 @@
                             </div>
                         </div>
 
-                        <div class="cartoon-box-sm bg-white w-full h-[104px] p-2 mt-2 flex flex-col justify-between text-center">
-                            <div id="card-title-2" class="text-xs font-semibold text-slate-900 single-line">บีกเกอร์ 2: เบกกิ้งโซดา</div>
-                            <div id="status-pill-2" class="text-[11px] font-medium py-0.5 px-2 rounded bg-slate-100 border border-slate-400 text-slate-600 single-line">
+                        <div class="cartoon-box-sm bg-white w-full h-[92px] p-1.5 mt-1.5 flex flex-col justify-between text-center">
+                            <div id="card-title-2" class="text-[11px] font-semibold text-slate-900 single-line">บีกเกอร์ 2: เบกกิ้งโซดา</div>
+                            <div id="status-pill-2" class="text-[10px] font-medium py-0.5 px-1.5 rounded bg-slate-100 border border-slate-400 text-slate-600 single-line">
                                 ยังไม่ได้วัดอุณหภูมิ
                             </div>
-                            <button onclick="moveThermometer(2)" class="cartoon-btn bg-sky-300 text-slate-900 py-1 text-xs w-full single-line">
-                                🌡️ วัดอุณหภูมิบีกเกอร์ 2
+                            <button onclick="moveThermometer(2)" class="cartoon-btn bg-sky-300 text-slate-900 py-1 text-[10.5px] w-full single-line">
+                                🌡️ วัดอุณหภูมิ 2
                             </button>
                         </div>
                     </div>
 
                     <!-- BEAKER 3 (REACTION SYSTEM) -->
                     <div class="beaker-container" id="beaker-col-3">
-                        <div class="h-9 flex items-center justify-center gap-1 mb-1 w-full pl-5">
-                            <button id="slot-btn-3" onclick="moveThermometer(3)" class="cartoon-btn bg-sky-100 hover:bg-sky-200 border-dashed text-sky-950 px-2.5 py-0.5 text-[11px] single-line -ml-5">
+                        <div class="h-8 flex items-center justify-center gap-1 mb-1 w-full pl-3">
+                            <button id="slot-btn-3" onclick="moveThermometer(3)" class="cartoon-btn bg-sky-100 hover:bg-sky-200 border-dashed text-sky-950 px-2 py-0.5 text-[10px] single-line -ml-3">
                                 🌡️ ⬇️ จุ่มวัดบีกเกอร์ 3
                             </button>
-                            <div id="active-badge-3" class="hidden cartoon-box-sm bg-amber-300 px-2 py-0.5 text-[11px] font-semibold text-slate-900 single-line">
+                            <div id="active-badge-3" class="hidden cartoon-box-sm bg-amber-300 px-1.5 py-0.5 text-[10px] font-semibold text-slate-900 single-line">
                                 🌡️ <span id="active-val-3">28.0 °C</span>
                             </div>
-                            <div id="heat-pill-top" class="hidden heat-badge-anim cartoon-box-sm px-2 py-0.5 text-[10.5px] font-semibold single-line">
+                            <div id="heat-pill-top" class="hidden heat-badge-anim cartoon-box-sm px-1.5 py-0.5 text-[9.5px] font-semibold single-line">
                                 🔥 คายร้อน
                             </div>
                         </div>
@@ -797,21 +819,21 @@
                             </div>
                         </div>
 
-                        <div class="cartoon-box-sm bg-white w-full h-[104px] p-2 mt-2 flex flex-col justify-between text-center">
+                        <div class="cartoon-box-sm bg-white w-full h-[92px] p-1.5 mt-1.5 flex flex-col justify-between text-center">
                             <div class="flex items-center justify-between px-0.5">
-                                <span class="text-xs font-semibold text-slate-900 single-line">บีกเกอร์ 3 (ระบบ 🟢)</span>
-                                <span id="badge-temp-3" class="text-[10.5px] font-medium px-1.5 py-0.2 rounded bg-slate-100 border border-slate-500 single-line">
+                                <span class="text-[11px] font-semibold text-slate-900 single-line">บีกเกอร์ 3 (ระบบ 🟢)</span>
+                                <span id="badge-temp-3" class="text-[9.5px] font-medium px-1 py-0.2 rounded bg-slate-100 border border-slate-500 single-line">
                                     รอผสม
                                 </span>
                             </div>
-                            <button id="btn-mix" onclick="mixChemicals()" class="cartoon-btn bg-amber-400 hover:bg-amber-300 text-slate-900 py-1 text-xs w-full single-line">
-                                ⚗️ กดเพื่อผสมสาร (1+2)
+                            <button id="btn-mix" onclick="mixChemicals()" class="cartoon-btn bg-amber-400 hover:bg-amber-300 text-slate-900 py-0.5 text-[10.5px] w-full single-line">
+                                ⚗️ กดผสมสาร (1+2)
                             </button>
-                            <div class="grid grid-cols-2 gap-1.5">
-                                <button onclick="moveThermometer(3)" class="cartoon-btn bg-sky-300 text-slate-900 py-1 text-[11px] w-full single-line">
+                            <div class="grid grid-cols-2 gap-1">
+                                <button onclick="moveThermometer(3)" class="cartoon-btn bg-sky-300 text-slate-900 py-0.5 text-[10px] w-full single-line">
                                     🌡️ วัดค่า
                                 </button>
-                                <button onclick="touchBeaker3()" class="cartoon-btn bg-pink-300 text-slate-900 py-1 text-[11px] w-full single-line">
+                                <button onclick="touchBeaker3()" class="cartoon-btn bg-pink-300 text-slate-900 py-0.5 text-[10px] w-full single-line">
                                     🤚 สัมผัส
                                 </button>
                             </div>
@@ -823,39 +845,39 @@
         </section>
 
         <!-- RIGHT COLUMN: PROGRESSIVE GRAPH & ANALYTICS -->
-        <section class="w-[44%] h-full flex flex-col gap-2 overflow-hidden">
+        <section class="w-full lg:w-[45%] flex flex-col gap-2 shrink-0">
 
-            <div class="cartoon-box p-2.5 bg-white flex-1 flex flex-col justify-between overflow-hidden">
-                <div class="flex items-center justify-between shrink-0">
+            <div class="cartoon-box p-2 md:p-2.5 bg-white flex-1 flex flex-col justify-between">
+                <div class="flex items-center justify-between gap-1 shrink-0">
                     <div class="flex items-center gap-1.5 min-w-0">
                         <span class="w-6 h-6 rounded-md bg-indigo-100 border-2 border-slate-900 flex items-center justify-center text-xs shrink-0">📈</span>
                         <h2 class="font-semibold text-slate-900 text-xs md:text-sm single-line">
                             กราฟการเปลี่ยนแปลงพลังงานของปฏิกิริยาเคมี
                         </h2>
                     </div>
-                    <button onclick="playFullGraph()" class="cartoon-btn bg-emerald-400 text-slate-900 px-3 py-1 text-[11px] shrink-0">
+                    <button onclick="playFullGraph()" class="cartoon-btn bg-emerald-400 text-slate-900 px-2.5 py-1 text-[10.5px] md:text-[11px] shrink-0">
                         ▶ เล่นกราฟทีละขั้น
                     </button>
                 </div>
 
-                <div class="grid grid-cols-4 gap-1.5 my-1.5 shrink-0">
-                    <button id="gstep-1" onclick="setGraphStep(1)" class="cartoon-btn py-1 text-[11px] bg-amber-300 text-slate-900">
+                <div class="grid grid-cols-4 gap-1 my-1.5 shrink-0">
+                    <button id="gstep-1" onclick="setGraphStep(1)" class="cartoon-btn py-1 text-[10px] md:text-[11px] bg-amber-300 text-slate-900">
                         1️⃣ สารตั้งต้น
                     </button>
-                    <button id="gstep-2" onclick="setGraphStep(2)" class="cartoon-btn py-1 text-[11px] bg-slate-100 text-slate-700">
+                    <button id="gstep-2" onclick="setGraphStep(2)" class="cartoon-btn py-1 text-[10px] md:text-[11px] bg-slate-100 text-slate-700">
                         2️⃣ สลายพันธะ (Ea)
                     </button>
-                    <button id="gstep-3" onclick="setGraphStep(3)" class="cartoon-btn py-1 text-[11px] bg-slate-100 text-slate-700">
+                    <button id="gstep-3" onclick="setGraphStep(3)" class="cartoon-btn py-1 text-[10px] md:text-[11px] bg-slate-100 text-slate-700">
                         3️⃣ สร้างพันธะ
                     </button>
-                    <button id="gstep-4" onclick="setGraphStep(4)" class="cartoon-btn py-1 text-[11px] bg-slate-100 text-slate-700">
+                    <button id="gstep-4" onclick="setGraphStep(4)" class="cartoon-btn py-1 text-[10px] md:text-[11px] bg-slate-100 text-slate-700">
                         4️⃣ สรุปผล (ΔH)
                     </button>
                 </div>
 
-                <!-- SVG GRAPH -->
-                <div class="relative w-full flex-1 bg-slate-900 border-3 border-slate-900 rounded-xl flex items-center justify-center overflow-hidden p-1 shadow-inner">
-                    <svg id="energy-svg" viewBox="0 0 500 255" class="w-full h-full">
+                <!-- SVG GRAPH (กำหนด min-h-[210px] ป้องกันกราฟถูกบีบจนหายบนจอมือถือ) -->
+                <div class="relative w-full flex-1 min-h-[210px] sm:min-h-[235px] bg-slate-900 border-3 border-slate-900 rounded-xl flex items-center justify-center overflow-hidden p-1 shadow-inner">
+                    <svg id="energy-svg" viewBox="0 0 500 255" class="w-full h-full max-h-[270px]">
                         <defs>
                             <clipPath id="curve-reveal-clip">
                                 <rect id="clip-rect" x="0" y="0" width="130" height="255" style="transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);" />
@@ -926,7 +948,7 @@
                             <text id="svg-react-text" x="103" y="166" font-size="10" font-weight="500" fill="#f8fafc" text-anchor="middle" class="svg-clean-text">สารตั้งต้น</text>
                         </g>
 
-                        <!-- STEP 2: Ea Group (ลูกศรตรงกลางพีก x=240 และป้าย Ea อยู่ในโซนสีดำว่างด้านขวา) -->
+                        <!-- STEP 2: Ea Group -->
                         <g id="svg-ea-group" opacity="0" style="transition: opacity 0.3s ease;">
                             <line id="svg-ea-arrow" x1="240" y1="174" x2="240" y2="61" stroke="#fbbf24" stroke-width="2" stroke-dasharray="3,2" marker-start="url(#arrow-amber)" marker-end="url(#arrow-amber)"/>
                             <line id="svg-ea-leader" x1="240" y1="70" x2="294" y2="70" stroke="#fbbf24" stroke-width="1.4" stroke-dasharray="2,2"/>
@@ -939,7 +961,7 @@
                             <text x="240" y="33" font-size="10" font-weight="500" fill="#78350f" text-anchor="middle" class="svg-clean-text">⚡ สภาวะแทรนซิชัน (สลายพันธะ)</text>
                         </g>
 
-                        <!-- STEP 3: Product Pill (ล็อกตรงกลางเหนือจุดสีเหลือง) -->
+                        <!-- STEP 3: Product Pill -->
                         <g id="svg-product-pill" opacity="0" style="transition: opacity 0.3s ease;">
                             <rect id="svg-prod-rect" x="358" y="86" width="64" height="21" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="1.6" style="transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);"/>
                             <text id="svg-prod-text" x="390" y="100" font-size="10" font-weight="500" fill="#f8fafc" text-anchor="middle" class="svg-clean-text" style="transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);">ผลิตภัณฑ์</text>
@@ -958,72 +980,72 @@
                 </div>
 
                 <div class="cartoon-box-sm bg-amber-50 p-2 mt-1.5 shrink-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <span id="graph-exp-title" class="font-semibold text-xs text-slate-900 single-line">
+                    <div class="flex items-center justify-between gap-1 flex-wrap">
+                        <span id="graph-exp-title" class="font-semibold text-[11px] md:text-xs text-slate-900">
                             📍 ขั้นที่ 1: ระดับพลังงานของสารตั้งต้น (Reactants)
                         </span>
-                        <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-900 text-amber-300 shrink-0">
+                        <span class="text-[9.5px] font-medium px-2 py-0.5 rounded bg-slate-900 text-amber-300 shrink-0">
                             สลาย = ดูด | สร้าง = คาย
                         </span>
                     </div>
-                    <p id="graph-exp-desc" class="text-[11.5px] font-normal text-slate-700 mt-0.5 leading-snug">
+                    <p id="graph-exp-desc" class="text-[11px] font-normal text-slate-700 mt-0.5 leading-snug">
                         สารตั้งต้นมีพลังงานศักย์สะสมอยู่ในตัวระดับหนึ่ง ยังไม่เริ่มสลายพันธะ อุณหภูมิเท่ากับอุณหภูมิห้อง (28.0 °C)
                     </p>
                 </div>
             </div>
 
-            <!-- Bottom Readout & Data Table -->
-            <div class="cartoon-box p-2.5 bg-white shrink-0 flex flex-col gap-1.5">
-                <div class="grid grid-cols-12 gap-2 items-stretch">
-                    <div class="col-span-5 bg-slate-900 border-3 border-slate-900 rounded-xl p-2 text-white flex flex-col justify-between">
-                        <div class="flex items-center justify-between">
+            <!-- Bottom Readout & Data Table (ไม่โดนตัดขอบขวาในมือถือ) -->
+            <div class="cartoon-box p-2 bg-white shrink-0 flex flex-col gap-1.5">
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-stretch">
+                    <div class="sm:col-span-5 bg-slate-900 border-3 border-slate-900 rounded-xl p-2 text-white flex flex-col justify-between">
+                        <div class="flex items-center justify-between gap-1">
                             <span class="text-[10.5px] text-slate-300 font-normal single-line">🌡️ เทอร์มอมิเตอร์</span>
                             <span id="digital-target-badge" class="text-[10px] bg-amber-400 text-slate-900 font-semibold px-1.5 py-0.5 rounded single-line">
                                 แท่นวาง
                             </span>
                         </div>
-                        <div id="digital-temp-val" class="text-2xl font-semibold text-emerald-400 text-center my-0.5 tracking-tight single-line">
+                        <div id="digital-temp-val" class="text-xl md:text-2xl font-semibold text-emerald-400 text-center my-0.5 tracking-tight single-line">
                             28.0 °C
                         </div>
-                        <div id="digital-delta-text" class="text-[10.5px] text-center text-slate-300 font-normal single-line">
+                        <div id="digital-delta-text" class="text-[10px] text-center text-slate-300 font-normal single-line">
                             อุณหภูมิห้องเริ่มต้น (ปกติ)
                         </div>
                     </div>
 
-                    <div class="col-span-7 border-2 border-slate-900 rounded-xl p-2 bg-slate-50 flex flex-col justify-between">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[11.5px] font-semibold text-slate-900 single-line">📋 ตารางบันทึกผลการทดลอง</span>
-                            <button onclick="autoFillData()" class="cartoon-btn bg-amber-300 text-slate-900 px-2 py-0.5 text-[10px]">
+                    <div class="sm:col-span-7 border-2 border-slate-900 rounded-xl p-2 bg-slate-50 flex flex-col justify-between overflow-x-auto">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <span class="text-[11px] font-semibold text-slate-900 single-line">📋 ตารางบันทึกผลการทดลอง</span>
+                            <button onclick="autoFillData()" class="cartoon-btn bg-amber-300 text-slate-900 px-2 py-0.5 text-[10px] shrink-0">
                                 ⚡ สาธิตอัตโนมัติ
                             </button>
                         </div>
-                        <table class="w-full text-[11.5px]">
+                        <table class="w-full text-[11px]">
                             <thead>
                                 <tr class="border-b border-slate-300 text-slate-600 font-medium">
                                     <th class="text-left py-0.5 font-medium">รายการวัด</th>
-                                    <th class="text-right py-0.5 font-medium">อุณหภูมิ (°C)</th>
+                                    <th class="text-right py-0.5 font-medium shrink-0">อุณหภูมิ (°C)</th>
                                 </tr>
                             </thead>
                             <tbody class="font-medium text-slate-800">
                                 <tr class="border-b border-slate-200">
-                                    <td id="table-label-1" class="py-0.5 single-line">1. สารในบีกเกอร์ 1</td>
-                                    <td id="table-val-1" class="text-right text-slate-500 single-line">รอวัดค่า</td>
+                                    <td id="table-label-1" class="py-0.5 pr-2">1. สารในบีกเกอร์ 1</td>
+                                    <td id="table-val-1" class="text-right text-slate-500 whitespace-nowrap">รอวัดค่า</td>
                                 </tr>
                                 <tr class="border-b border-slate-200">
-                                    <td id="table-label-2" class="py-0.5 single-line">2. สารในบีกเกอร์ 2</td>
-                                    <td id="table-val-2" class="text-right text-slate-500 single-line">รอวัดค่า</td>
+                                    <td id="table-label-2" class="py-0.5 pr-2">2. สารในบีกเกอร์ 2</td>
+                                    <td id="table-val-2" class="text-right text-slate-500 whitespace-nowrap">รอวัดค่า</td>
                                 </tr>
                                 <tr>
-                                    <td class="py-0.5 font-semibold text-slate-900 single-line">3. หลังผสมในบีกเกอร์ 3 (ระบบ 🟢)</td>
-                                    <td id="table-val-3" class="text-right font-semibold text-slate-500 single-line">รอผสมสาร</td>
+                                    <td class="py-0.5 pr-2 font-semibold text-slate-900">3. หลังผสมในบีกเกอร์ 3 (ระบบ 🟢)</td>
+                                    <td id="table-val-3" class="text-right font-semibold text-slate-500 whitespace-nowrap">รอผสมสาร</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div id="summary-footer" class="bg-emerald-50 border-2 border-emerald-600 rounded-lg px-2.5 py-1 text-[11.5px] font-medium text-emerald-950 flex items-center justify-between">
-                    <span id="summary-footer-text" class="single-line">💡 สรุปผลการทดลอง: เลือกคู่สารเคมีด้านบน วัดอุณหภูมิเริ่มต้น แล้วกดผสมสารได้เลย!</span>
+                <div id="summary-footer" class="bg-emerald-50 border-2 border-emerald-600 rounded-lg px-2.5 py-1 text-[11px] font-medium text-emerald-950 flex items-center justify-between">
+                    <span id="summary-footer-text" class="leading-snug">💡 สรุปผลการทดลอง: เลือกคู่สารเคมีด้านบน วัดอุณหภูมิเริ่มต้น แล้วกดผสมสารได้เลย!</span>
                 </div>
             </div>
         </section>
@@ -1031,12 +1053,12 @@
 
     <!-- 4. PARTICLE VIEW MODAL -->
     <div id="particle-modal" class="hidden fixed inset-0 bg-slate-900/75 z-50 flex items-center justify-center p-4">
-        <div class="cartoon-box bg-white max-w-xl w-full p-5 relative">
-            <div class="flex items-center justify-between border-b-2 border-slate-200 pb-3 mb-3">
-                <h3 class="text-lg font-extrabold text-slate-900">🔬 ระบบ (System) & สิ่งแวดล้อม (Surroundings)</h3>
+        <div class="cartoon-box bg-white max-w-xl w-full p-4 md:p-5 relative max-h-[90dvh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b-2 border-slate-200 pb-2.5 mb-3">
+                <h3 class="text-base md:text-lg font-extrabold text-slate-900">🔬 ระบบ (System) & สิ่งแวดล้อม (Surroundings)</h3>
                 <button onclick="toggleParticleModal()" class="cartoon-btn bg-rose-400 text-white px-3 py-1 text-xs">✖ ปิดหน้าต่าง</button>
             </div>
-            <div class="grid grid-cols-2 gap-3 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div class="cartoon-box-sm p-3 bg-indigo-50 border-2 border-indigo-900">
                     <div class="font-extrabold text-indigo-900 text-sm mb-1">🟢 ระบบ (System)</div>
                     <p class="text-slate-700 leading-relaxed">
@@ -1062,9 +1084,9 @@
 
     <!-- 5. MINI QUIZ MODAL -->
     <div id="quiz-modal" class="hidden fixed inset-0 bg-slate-900/75 z-50 flex items-center justify-center p-4">
-        <div class="cartoon-box bg-white max-w-2xl w-full p-5 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between border-b-2 border-slate-200 pb-3 mb-3">
-                <h3 class="text-lg font-extrabold text-slate-900">📝 แบบทดสอบวัดแนวคิดวิทยาศาสตร์ (3 ข้อ)</h3>
+        <div class="cartoon-box bg-white max-w-2xl w-full p-4 md:p-5 max-h-[90dvh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b-2 border-slate-200 pb-2.5 mb-3">
+                <h3 class="text-base md:text-lg font-extrabold text-slate-900">📝 แบบทดสอบวัดแนวคิดวิทยาศาสตร์ (3 ข้อ)</h3>
                 <button onclick="toggleQuizModal()" class="cartoon-btn bg-rose-400 text-white px-3 py-1 text-xs">✖ ปิด</button>
             </div>
 
@@ -1074,10 +1096,10 @@
                         ข้อ 1: เมื่อผสมสารในปฏิกิริยาดูดความร้อน แล้วจับข้างบีกเกอร์รู้สึก "เย็นลง" ข้อใดอธิบายทิศทางความร้อนได้ถูกต้อง?
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <button onclick="checkQuiz(1, true, this)" class="cartoon-btn bg-white p-2 text-left text-xs">
+                        <button onclick="checkQuiz(1, true, this)" class="cartoon-btn bg-white p-2 text-left text-xs whitespace-normal">
                             ก. ระบบดูดความร้อนจากมือเราและเทอร์มอมิเตอร์เข้าไป
                         </button>
-                        <button onclick="checkQuiz(1, false, this)" class="cartoon-btn bg-white p-2 text-left text-xs">
+                        <button onclick="checkQuiz(1, false, this)" class="cartoon-btn bg-white p-2 text-left text-xs whitespace-normal">
                             ข. ระบบคายความเย็นออกมาสู่มือเราและเทอร์มอมิเตอร์
                         </button>
                     </div>
@@ -1089,10 +1111,10 @@
                         ข้อ 2: ในการทดลองทั้งหมด "เทอร์มอมิเตอร์" และ "บีกเกอร์" จัดเป็นส่วนใดของการศึกษา?
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <button onclick="checkQuiz(2, false, this)" class="cartoon-btn bg-white p-2 text-left text-xs">
+                        <button onclick="checkQuiz(2, false, this)" class="cartoon-btn bg-white p-2 text-left text-xs whitespace-normal">
                             ก. ระบบ (System) เพราะสัมผัสกับสารเคมีโดยตรง
                         </button>
-                        <button onclick="checkQuiz(2, true, this)" class="cartoon-btn bg-white p-2 text-left text-xs">
+                        <button onclick="checkQuiz(2, true, this)" class="cartoon-btn bg-white p-2 text-left text-xs whitespace-normal">
                             ข. สิ่งแวดล้อม (Surroundings) ที่รับ-ส่งความร้อนกับสารเคมี
                         </button>
                     </div>
@@ -1104,10 +1126,10 @@
                         ข้อ 3: จากกราฟพลังงานของปฏิกิริยาคายความร้อน ข้อใดกล่าวถูกต้อง?
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <button onclick="checkQuiz(3, true, this)" class="cartoon-btn bg-white p-2 text-left text-xs">
+                        <button onclick="checkQuiz(3, true, this)" class="cartoon-btn bg-white p-2 text-left text-xs whitespace-normal">
                             ก. ระดับพลังงานของผลิตภัณฑ์ ต่ำกว่า สารตั้งต้น
                         </button>
-                        <button onclick="checkQuiz(3, false, this)" class="cartoon-btn bg-white p-2 text-left text-xs">
+                        <button onclick="checkQuiz(3, false, this)" class="cartoon-btn bg-white p-2 text-left text-xs whitespace-normal">
                             ข. ระดับพลังงานของผลิตภัณฑ์ สูงกว่า สารตั้งต้น
                         </button>
                     </div>
@@ -1275,7 +1297,6 @@
             }
         };
 
-        // --- Slide-Down Dropdown Controller ---
         function toggleReactionDropdown(e) {
             if (e) e.stopPropagation();
             const panel = document.getElementById('reaction-dropdown-panel');
@@ -1297,7 +1318,6 @@
             if (chevron) chevron.classList.remove('open');
         }
 
-        // ปิดเมนูสไลด์อัตโนมัติเมื่อคลิกพื้นที่อื่นนอกเมนู
         document.addEventListener('click', (e) => {
             const wrapper = document.getElementById('reaction-dropdown-wrapper');
             if (wrapper && !wrapper.contains(e.target)) {
@@ -1311,7 +1331,7 @@
             let html = '';
             preset.eqCards.forEach((item, idx) => {
                 if (item.arrow) {
-                    html += `<span class="font-semibold text-slate-900 text-base px-1">➔</span>`;
+                    html += `<span class="font-semibold text-slate-900 text-sm md:text-base px-0.5">➔</span>`;
                 } else {
                     if (idx > 0 && !preset.eqCards[idx - 1].arrow) {
                         html += `<span class="font-semibold text-slate-600 text-xs">+</span>`;
@@ -1362,8 +1382,8 @@
         function toggleSound() {
             soundEnabled = !soundEnabled;
             const btn = document.getElementById('btn-sound');
-            btn.textContent = soundEnabled ? '🔊 เสียง' : '🔇 ปิดเสียง';
-            btn.className = soundEnabled ? 'cartoon-btn px-2 py-1 text-[11px] bg-emerald-300 text-slate-900' : 'cartoon-btn px-2 py-1 text-[11px] bg-slate-200 text-slate-600';
+            btn.textContent = soundEnabled ? '🔊 เสียง' : '🔇 ปิด';
+            btn.className = soundEnabled ? 'cartoon-btn px-2 py-1 text-[10.5px] md:text-[11px] bg-emerald-300 text-slate-900' : 'cartoon-btn px-2 py-1 text-[10.5px] md:text-[11px] bg-slate-200 text-slate-600';
         }
 
         function selectPreset(index) {
@@ -1378,10 +1398,10 @@
             labelSpan.textContent = selectedPreset.shortTitle;
             if (selectedPreset.type === 'endo') {
                 typePill.textContent = '❄️ ดูดความร้อน';
-                typePill.className = 'px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-sky-200 text-sky-950 border border-slate-900 shrink-0';
+                typePill.className = 'px-1.5 py-0.5 rounded text-[10px] font-bold bg-sky-200 text-sky-950 border border-slate-900 shrink-0';
             } else {
                 typePill.textContent = '🔥 คายความร้อน';
-                typePill.className = 'px-2 py-0.5 rounded-md text-[10.5px] font-bold bg-rose-300 text-rose-950 border border-slate-900 shrink-0';
+                typePill.className = 'px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-300 text-rose-950 border border-slate-900 shrink-0';
             }
 
             for (let i = 0; i < 6; i++) {
@@ -1389,12 +1409,12 @@
                 const isEndo = REACTION_PRESETS[i].type === 'endo';
                 if (i === index) {
                     btn.className = isEndo
-                        ? 'cartoon-btn w-full text-left px-2.5 py-1.5 text-xs flex items-center justify-between bg-sky-300 text-slate-900 font-semibold'
-                        : 'cartoon-btn w-full text-left px-2.5 py-1.5 text-xs flex items-center justify-between bg-rose-400 text-white font-semibold';
+                        ? 'cartoon-btn w-full text-left px-2 py-1.5 text-[11px] flex items-center justify-between bg-sky-300 text-slate-900 font-semibold'
+                        : 'cartoon-btn w-full text-left px-2 py-1.5 text-[11px] flex items-center justify-between bg-rose-400 text-white font-semibold';
                 } else {
                     btn.className = isEndo
-                        ? 'cartoon-btn w-full text-left px-2.5 py-1.5 text-xs flex items-center justify-between bg-white hover:bg-sky-100 text-slate-700'
-                        : 'cartoon-btn w-full text-left px-2.5 py-1.5 text-xs flex items-center justify-between bg-white hover:bg-rose-100 text-slate-700';
+                        ? 'cartoon-btn w-full text-left px-2 py-1.5 text-[11px] flex items-center justify-between bg-white hover:bg-sky-100 text-slate-700'
+                        : 'cartoon-btn w-full text-left px-2 py-1.5 text-[11px] flex items-center justify-between bg-white hover:bg-rose-100 text-slate-700';
                 }
             }
 
@@ -1416,7 +1436,7 @@
             document.getElementById('mascot-avatar').textContent = '🐣';
             const badge = document.getElementById('exp-badge');
             badge.textContent = preset.badge;
-            badge.className = isEndo ? 'text-[11px] font-semibold px-2 py-0.5 rounded bg-sky-200 border-2 border-slate-900 text-slate-900 single-line' : 'text-[11px] font-semibold px-2 py-0.5 rounded bg-rose-200 border-2 border-slate-900 text-slate-900 single-line';
+            badge.className = isEndo ? 'text-[10.5px] md:text-[11px] font-semibold px-2 py-0.5 rounded bg-sky-200 border-2 border-slate-900 text-slate-900 single-line max-w-full' : 'text-[10.5px] md:text-[11px] font-semibold px-2 py-0.5 rounded bg-rose-200 border-2 border-slate-900 text-slate-900 single-line max-w-full';
 
             renderEquationBanner();
 
@@ -1452,35 +1472,35 @@
             kawaii.textContent = '😊'; kawaii.classList.remove('kawaii-active');
 
             const topRightBadge = document.getElementById('stage-top-right-badge');
-            topRightBadge.innerHTML = '<span>🟢 <b class="font-semibold text-indigo-700">ระบบ (System):</b> สารเคมีในบีกเกอร์ 3</span><span>|</span><span>🟠 <b class="font-semibold text-orange-700">สิ่งแวดล้อม (Surroundings):</b> บีกเกอร์, เทอร์มอมิเตอร์, มือสัมผัส</span>';
+            topRightBadge.innerHTML = '<span>🟢 <b class="font-semibold text-indigo-700">ระบบ (System):</b> สารเคมีในบีกเกอร์ 3</span><span class="hidden sm:inline">|</span><span>🟠 <b class="font-semibold text-orange-700">สิ่งแวดล้อม (Surroundings):</b> บีกเกอร์, เทอร์มอมิเตอร์, มือสัมผัส</span>';
 
             document.getElementById('reagent-stripe-3').className = 'reagent-stripe bg-slate-400';
             document.getElementById('chem-formula-3').textContent = 'บีกเกอร์เปล่า';
             document.getElementById('chem-sub-3').textContent = 'รอเทผสมสาร 1 + 2';
             document.getElementById('badge-temp-3').textContent = 'รอผสม';
-            document.getElementById('badge-temp-3').className = 'text-[10.5px] font-medium px-1.5 py-0.2 rounded bg-slate-100 border border-slate-500 single-line';
+            document.getElementById('badge-temp-3').className = 'text-[9.5px] font-medium px-1 py-0.2 rounded bg-slate-100 border border-slate-500 single-line';
 
             document.getElementById('btn-mix').disabled = false;
-            document.getElementById('btn-mix').textContent = '⚗️ กดเพื่อผสมสาร (1+2)';
+            document.getElementById('btn-mix').textContent = '⚗️ กดผสมสาร (1+2)';
 
             ['1', '2'].forEach(id => {
                 const pill = document.getElementById('status-pill-' + id);
                 pill.textContent = 'ยังไม่ได้วัดอุณหภูมิ';
-                pill.className = 'text-[11px] font-medium py-0.5 px-2 rounded bg-slate-100 border border-slate-400 text-slate-600 single-line';
+                pill.className = 'text-[10px] font-medium py-0.5 px-1.5 rounded bg-slate-100 border border-slate-400 text-slate-600 single-line';
             });
 
             document.getElementById('table-val-1').textContent = 'รอวัดค่า';
-            document.getElementById('table-val-1').className = 'text-right text-slate-500 single-line';
+            document.getElementById('table-val-1').className = 'text-right text-slate-500 whitespace-nowrap';
             document.getElementById('table-val-2').textContent = 'รอวัดค่า';
-            document.getElementById('table-val-2').className = 'text-right text-slate-500 single-line';
+            document.getElementById('table-val-2').className = 'text-right text-slate-500 whitespace-nowrap';
             document.getElementById('table-val-3').textContent = 'รอผสมสาร';
-            document.getElementById('table-val-3').className = 'text-right font-semibold text-slate-500 single-line';
+            document.getElementById('table-val-3').className = 'text-right font-semibold text-slate-500 whitespace-nowrap';
 
-            document.getElementById('touch-status-card').className = 'cartoon-box-sm px-2.5 py-1 bg-amber-50 text-[11px] w-[235px] shrink-0';
+            document.getElementById('touch-status-card').className = 'cartoon-box-sm px-2 py-1 bg-amber-50 text-[10.5px] w-full sm:w-auto sm:min-w-[210px] shrink-0';
             document.getElementById('touch-status-text').textContent = 'ยังไม่ได้สัมผัส (กดปุ่มสัมผัสหลังผสม)';
 
             const footer = document.getElementById('summary-footer');
-            footer.className = 'bg-emerald-50 border-2 border-emerald-600 rounded-lg px-2.5 py-1 text-[11.5px] font-medium text-emerald-950 flex items-center justify-between';
+            footer.className = 'bg-emerald-50 border-2 border-emerald-600 rounded-lg px-2.5 py-1 text-[11px] font-medium text-emerald-950 flex items-center justify-between';
             document.getElementById('summary-footer-text').textContent = '💡 สรุปผลการทดลอง: กรุณาวัดอุณหภูมิเริ่มต้นในบีกเกอร์ 1 และ 2 ก่อนผสมสาร';
 
             moveThermometer(0);
@@ -1510,7 +1530,7 @@
                 locBadge.textContent = 'อยู่บนแท่นวาง';
                 digTarget.textContent = 'แท่นวาง';
                 digVal.textContent = '28.0 °C';
-                digVal.className = 'text-2xl font-semibold text-emerald-400 text-center my-0.5 tracking-tight single-line';
+                digVal.className = 'text-xl md:text-2xl font-semibold text-emerald-400 text-center my-0.5 tracking-tight single-line';
                 digDelta.textContent = 'อุณหภูมิห้องเริ่มต้น (ปกติ)';
                 dockGraphic.classList.remove('hidden');
                 dockEmpty.classList.add('hidden');
@@ -1519,7 +1539,7 @@
 
             dockGraphic.classList.add('hidden');
             dockEmpty.classList.remove('hidden');
-            dockEmpty.innerHTML = `<span>กำลังวัดในบีกเกอร์ที่ ${target}...</span>`;
+            dockEmpty.innerHTML = `<span>กำลังวัดบีกเกอร์ ${target}...</span>`;
 
             document.getElementById('thermo-in-' + target).classList.remove('hidden');
             document.getElementById('slot-btn-' + target).classList.add('hidden');
@@ -1532,18 +1552,18 @@
                 measured1 = true;
                 const pill = document.getElementById('status-pill-1');
                 pill.textContent = '✅ วัดแล้ว: 28.0 °C';
-                pill.className = 'text-[11px] font-semibold py-0.5 px-2 rounded bg-emerald-200 border border-emerald-700 text-emerald-950 single-line';
+                pill.className = 'text-[10px] font-semibold py-0.5 px-1.5 rounded bg-emerald-200 border border-emerald-700 text-emerald-950 single-line';
                 document.getElementById('table-val-1').textContent = '28.0 °C';
-                document.getElementById('table-val-1').className = 'text-right text-emerald-700 font-semibold single-line';
+                document.getElementById('table-val-1').className = 'text-right text-emerald-700 font-semibold whitespace-nowrap';
                 digVal.textContent = '28.0 °C';
                 digDelta.textContent = 'อุณหภูมิเริ่มต้นของสารตั้งต้น';
             } else if (target === 2) {
                 measured2 = true;
                 const pill = document.getElementById('status-pill-2');
                 pill.textContent = '✅ วัดแล้ว: 28.0 °C';
-                pill.className = 'text-[11px] font-semibold py-0.5 px-2 rounded bg-emerald-200 border border-emerald-700 text-emerald-950 single-line';
+                pill.className = 'text-[10px] font-semibold py-0.5 px-1.5 rounded bg-emerald-200 border border-emerald-700 text-emerald-950 single-line';
                 document.getElementById('table-val-2').textContent = '28.0 °C';
-                document.getElementById('table-val-2').className = 'text-right text-emerald-700 font-semibold single-line';
+                document.getElementById('table-val-2').className = 'text-right text-emerald-700 font-semibold whitespace-nowrap';
                 digVal.textContent = '28.0 °C';
                 digDelta.textContent = 'อุณหภูมิเริ่มต้นของสารตั้งต้น';
             } else if (target === 3) {
@@ -1564,7 +1584,7 @@
             if (!isMixed) {
                 document.getElementById('active-val-3').textContent = '28.0 °C';
                 digVal.textContent = '28.0 °C';
-                digVal.className = 'text-2xl font-semibold text-emerald-400 text-center my-0.5 tracking-tight single-line';
+                digVal.className = 'text-xl md:text-2xl font-semibold text-emerald-400 text-center my-0.5 tracking-tight single-line';
                 digDelta.textContent = 'บีกเกอร์เปล่า (อุณหภูมิห้อง)';
                 merc3.style.height = '55%'; merc3.style.backgroundColor = '#ef4444'; bulb3.style.backgroundColor = '#ef4444';
             } else {
@@ -1576,16 +1596,16 @@
 
                 if (isEndo) {
                     digVal.textContent = finalT;
-                    digVal.className = 'text-2xl font-semibold text-sky-400 text-center my-0.5 tracking-tight single-line';
+                    digVal.className = 'text-xl md:text-2xl font-semibold text-sky-400 text-center my-0.5 tracking-tight single-line';
                     digDelta.textContent = `ΔT = ${diff} °C (อุณหภูมิลดลง ❄️)`;
                     merc3.style.height = '25%'; merc3.style.backgroundColor = '#0284c7'; bulb3.style.backgroundColor = '#0284c7';
-                    document.getElementById('table-val-3').className = 'text-right font-semibold text-sky-700 single-line';
+                    document.getElementById('table-val-3').className = 'text-right font-semibold text-sky-700 whitespace-nowrap';
                 } else {
                     digVal.textContent = finalT;
-                    digVal.className = 'text-2xl font-semibold text-orange-400 text-center my-0.5 tracking-tight single-line';
+                    digVal.className = 'text-xl md:text-2xl font-semibold text-orange-400 text-center my-0.5 tracking-tight single-line';
                     digDelta.textContent = `ΔT = +${diff} °C (อุณหภูมิสูงขึ้น 🔥)`;
                     merc3.style.height = '88%'; merc3.style.backgroundColor = '#ef4444'; bulb3.style.backgroundColor = '#ef4444';
-                    document.getElementById('table-val-3').className = 'text-right font-semibold text-rose-600 single-line';
+                    document.getElementById('table-val-3').className = 'text-right font-semibold text-rose-600 whitespace-nowrap';
                 }
             }
         }
@@ -1597,7 +1617,7 @@
 
             const btnMix = document.getElementById('btn-mix');
             btnMix.disabled = true;
-            btnMix.textContent = '⏳ กำลังเทสารลงบีกเกอร์ 3...';
+            btnMix.textContent = '⏳ กำลังเทสาร...';
 
             const anim1 = document.getElementById('beaker-anim-1');
             const anim2 = document.getElementById('beaker-anim-2');
@@ -1612,7 +1632,7 @@
             const dx2 = (rect3.left - rect2.left) - (rect3.width * 0.32);
 
             anim1.style.zIndex = '45';
-            anim1.style.transform = `translate(${dx1}px, -78px) rotate(65deg)`;
+            anim1.style.transform = `translate(${dx1}px, -65px) rotate(65deg)`;
             playTone('pour');
 
             setTimeout(() => {
@@ -1627,7 +1647,7 @@
                 anim1.style.zIndex = '15';
 
                 anim2.style.zIndex = '45';
-                anim2.style.transform = `translate(${dx2}px, -78px) rotate(65deg)`;
+                anim2.style.transform = `translate(${dx2}px, -65px) rotate(65deg)`;
                 playTone('pour');
             }, 900);
 
@@ -1671,13 +1691,13 @@
                     liq3.style.background = 'linear-gradient(180deg, rgba(125,211,252,0.84) 0%, rgba(56,189,248,0.95) 100%)';
                     glass3.classList.add('glow-cold');
                     document.getElementById('reagent-stripe-3').className = 'reagent-stripe bg-sky-500';
-                    document.getElementById('badge-temp-3').className = 'text-[10.5px] font-semibold px-1.5 py-0.2 rounded bg-sky-200 border border-sky-700 text-sky-900 single-line';
-                    heatPillTop.className = 'heat-badge-anim cartoon-box-sm px-2 py-0.5 text-[10.5px] font-semibold bg-sky-400 text-white single-line';
-                    heatPillTop.textContent = '❄️ ดูดร้อนเข้า';
+                    document.getElementById('badge-temp-3').className = 'text-[9.5px] font-semibold px-1 py-0.2 rounded bg-sky-200 border border-sky-700 text-sky-900 single-line';
+                    heatPillTop.className = 'heat-badge-anim cartoon-box-sm px-1.5 py-0.5 text-[9.5px] font-semibold bg-sky-400 text-white single-line';
+                    heatPillTop.textContent = '❄️ ดูดร้อน';
 
                     topRightBadge.innerHTML = `<span>🟢 <b class="font-semibold text-indigo-700">ระบบ:</b> สารละลายในบีกเกอร์ 3 (ดูดความร้อนจากสิ่งแวดล้อม)</span>`;
                     const footer = document.getElementById('summary-footer');
-                    footer.className = 'bg-sky-100 border-2 border-sky-700 rounded-lg px-2.5 py-1 text-[11.5px] font-medium text-sky-950 flex items-center justify-between';
+                    footer.className = 'bg-sky-100 border-2 border-sky-700 rounded-lg px-2.5 py-1 text-[11px] font-medium text-sky-950 flex items-center justify-between';
                     document.getElementById('summary-footer-text').textContent = `✅ สรุป: ปฏิกิริยาดูดความร้อน (ระบบดึงความร้อนจากสิ่งแวดล้อม ทำให้อุณหภูมิลดลงเหลือ ${preset.tempFinal.toFixed(1)} °C)`;
                 } else {
                     document.getElementById('mascot-avatar').textContent = '🤩';
@@ -1685,17 +1705,17 @@
                     liq3.style.background = 'linear-gradient(180deg, rgba(253,164,175,0.84) 0%, rgba(251,113,133,0.95) 100%)';
                     glass3.classList.add('glow-hot');
                     document.getElementById('reagent-stripe-3').className = 'reagent-stripe bg-rose-500';
-                    document.getElementById('badge-temp-3').className = 'text-[10.5px] font-semibold px-1.5 py-0.2 rounded bg-orange-200 border border-orange-700 text-orange-950 single-line';
-                    heatPillTop.className = 'heat-badge-anim cartoon-box-sm px-2 py-0.5 text-[10.5px] font-semibold bg-orange-500 text-white single-line';
-                    heatPillTop.textContent = '🔥 คายร้อนออก';
+                    document.getElementById('badge-temp-3').className = 'text-[9.5px] font-semibold px-1 py-0.2 rounded bg-orange-200 border border-orange-700 text-orange-950 single-line';
+                    heatPillTop.className = 'heat-badge-anim cartoon-box-sm px-1.5 py-0.5 text-[9.5px] font-semibold bg-orange-500 text-white single-line';
+                    heatPillTop.textContent = '🔥 คายร้อน';
 
                     topRightBadge.innerHTML = `<span>🟢 <b class="font-semibold text-indigo-700">ระบบ:</b> สารละลายในบีกเกอร์ 3 (คายความร้อนสู่สิ่งแวดล้อม)</span>`;
                     const footer = document.getElementById('summary-footer');
-                    footer.className = 'bg-orange-100 border-2 border-orange-700 rounded-lg px-2.5 py-1 text-[11.5px] font-medium text-orange-950 flex items-center justify-between';
+                    footer.className = 'bg-orange-100 border-2 border-orange-700 rounded-lg px-2.5 py-1 text-[11px] font-medium text-orange-950 flex items-center justify-between';
                     document.getElementById('summary-footer-text').textContent = `✅ สรุป: ปฏิกิริยาคายความร้อน (ระบบปล่อยความร้อนสู่วัตถุล้อมรอบ ทำให้อุณหภูมิสูงขึ้นเป็น ${preset.tempFinal.toFixed(1)} °C)`;
                 }
 
-                btnMix.textContent = '✅ ผสมสารเสร็จสมบูรณ์';
+                btnMix.textContent = '✅ ผสมเสร็จสมบูรณ์';
                 moveThermometer(3);
                 playFullGraph();
                 updateInstructionProgress();
@@ -1709,13 +1729,13 @@
             const txt = document.getElementById('touch-status-text');
 
             if (!isMixed) {
-                card.className = 'cartoon-box-sm px-2.5 py-1 bg-slate-100 text-[11px] w-[235px] shrink-0';
+                card.className = 'cartoon-box-sm px-2 py-1 bg-slate-100 text-[10.5px] w-full sm:w-auto sm:min-w-[210px] shrink-0';
                 txt.textContent = 'อุณหภูมิห้องปกติ (28.0 °C) ยังไม่ผสม';
             } else if (preset.type === 'endo') {
-                card.className = 'cartoon-box-sm px-2.5 py-1 bg-sky-200 text-[11px] w-[235px] shrink-0';
+                card.className = 'cartoon-box-sm px-2 py-1 bg-sky-200 text-[10.5px] w-full sm:w-auto sm:min-w-[210px] shrink-0';
                 txt.textContent = '❄️ รู้สึกเย็นจัด! (ระบบดึงความร้อนจากมือ)';
             } else {
-                card.className = 'cartoon-box-sm px-2.5 py-1 bg-orange-200 text-[11px] w-[235px] shrink-0';
+                card.className = 'cartoon-box-sm px-2 py-1 bg-orange-200 text-[10.5px] w-full sm:w-auto sm:min-w-[210px] shrink-0';
                 txt.textContent = '🔥 รู้สึกร้อน! (ระบบคายความร้อนมาที่มือ)';
             }
         }
@@ -1729,9 +1749,9 @@
             [1, 2, 3, 4].forEach(s => {
                 const btn = document.getElementById('gstep-' + s);
                 if (s === step) {
-                    btn.className = 'cartoon-btn py-1 text-[11px] bg-amber-300 text-slate-900 font-semibold';
+                    btn.className = 'cartoon-btn py-1 text-[10px] md:text-[11px] bg-amber-300 text-slate-900 font-semibold';
                 } else {
-                    btn.className = 'cartoon-btn py-1 text-[11px] bg-slate-100 text-slate-700';
+                    btn.className = 'cartoon-btn py-1 text-[10px] md:text-[11px] bg-slate-100 text-slate-700';
                 }
             });
 
@@ -1755,7 +1775,6 @@
             reactRect.setAttribute('stroke', geo.reactPill.stroke);
             reactText.setAttribute('y', geo.reactPill.textY);
 
-            // Step 2: Ea Arrow at Peak Center (x=240) + Ea Box in Empty Dark Space
             const eaGroup = document.getElementById('svg-ea-group');
             const peakPill = document.getElementById('svg-peak-pill');
             if (step >= 2) {
@@ -1785,14 +1804,12 @@
                 peakPill.style.opacity = '0';
             }
 
-            // Active Glowing Dot Position
             const dotPos = geo.dots[step - 1];
             document.getElementById('svg-dot').setAttribute('cx', dotPos.cx);
             document.getElementById('svg-dot').setAttribute('cy', dotPos.cy);
             document.getElementById('svg-dot-outer').setAttribute('cx', dotPos.cx);
             document.getElementById('svg-dot-outer').setAttribute('cy', dotPos.cy);
 
-            // Step 3 & 4: Product Pill Centered Directly Above the Yellow Dot
             const prodPill = document.getElementById('svg-product-pill');
             if (step >= 3) {
                 prodPill.style.opacity = '1';
@@ -1808,7 +1825,6 @@
                 prodPill.style.opacity = '0';
             }
 
-            // Step 4: ΔH Group
             const dhGroup = document.getElementById('svg-dh-group');
             if (step === 4) {
                 dhGroup.style.opacity = '1';
@@ -1874,7 +1890,7 @@
                 textEl.textContent = 'คลิกวัดอุณหภูมิที่ "บีกเกอร์ 1" และ "บีกเกอร์ 2" เพื่อบันทึกอุณหภูมิเริ่มต้น (28.0 °C)';
             } else if (!isMixed) {
                 stepEl.textContent = '[ขั้นตอนที่ 2/4]';
-                textEl.textContent = 'กดปุ่มสีเหลือง "⚗️ กดเพื่อผสมสาร (1+2)" ในบีกเกอร์ที่ 3 เพื่อเริ่มทำปฏิกิริยา';
+                textEl.textContent = 'กดปุ่มสีเหลือง "⚗️ กดผสมสาร (1+2)" ในบีกเกอร์ที่ 3 เพื่อเริ่มทำปฏิกิริยา';
             } else {
                 stepEl.textContent = '[ขั้นตอนที่ 4/4 เสร็จสมบูรณ์]';
                 textEl.textContent = 'สังเกตผลในบีกเกอร์ 3 กราฟพลังงานด้านขวา ลองกด "🤚 สัมผัส" หรือเลือกคู่สารอื่นด้านบนเพื่อทดลองต่อ!';
@@ -1906,12 +1922,12 @@
             fb.classList.remove('hidden');
             if (isCorrect) {
                 playTone('success');
-                btnEl.className = 'cartoon-btn bg-emerald-300 p-2 text-left text-xs font-extrabold text-slate-900';
+                btnEl.className = 'cartoon-btn bg-emerald-300 p-2 text-left text-xs font-extrabold text-slate-900 whitespace-normal';
                 fb.className = 'mt-2 text-xs font-extrabold text-emerald-700';
                 fb.textContent = '✅ ถูกต้องครับ! เยี่ยมมาก';
             } else {
                 playTone('beep');
-                btnEl.className = 'cartoon-btn bg-rose-200 p-2 text-left text-xs text-slate-800';
+                btnEl.className = 'cartoon-btn bg-rose-200 p-2 text-left text-xs text-slate-800 whitespace-normal';
                 fb.className = 'mt-2 text-xs font-extrabold text-rose-600';
                 fb.textContent = '❌ ยังไม่ถูกครับ ลองทบทวนความหมายของระบบและสิ่งแวดล้อมอีกครั้งนะ';
             }
